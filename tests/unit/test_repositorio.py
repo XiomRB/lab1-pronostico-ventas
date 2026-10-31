@@ -5,6 +5,8 @@ import subprocess
 import pytest
 
 OBLIGATORIOS = [
+    ".dvc/config",
+    ".dvcignore",
     ".env.example",
     ".github/workflows/ci.yml",
     ".gitignore",
