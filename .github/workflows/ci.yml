@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CONSTRAINTS: https://raw.githubusercontent.com/apache/airflow/constraints-3.3.2/constraints-3.12.txt
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements*.txt
+
+      - name: Instalar libgomp1
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libgomp1
+
+      - name: Instalar dependencias
+        run: |
+          python -m pip install -r requirements-dev.txt --constraint "$CONSTRAINTS"
+          python -m pip check
+
+      - name: Pruebas
+        run: python -m pytest -q
