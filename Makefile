@@ -4,7 +4,7 @@ CONSTRAINTS := https://raw.githubusercontent.com/apache/airflow/constraints-3.3.
 
 REMOTO := ../dvc-storage/lab1
 
-.PHONY: install test prepare-remote verify-remote
+.PHONY: install test prepare-remote verify-remote simulate
 
 install:
 	$(PYTHON) -m venv $(VENV)
@@ -13,6 +13,9 @@ install:
 
 test:
 	$(VENV)/bin/python -m pytest -q
+
+simulate:
+	PYTHONPATH=src $(VENV)/bin/python -m pronostico_ventas.simulador
 
 prepare-remote:
 	mkdir -p $(REMOTO)
