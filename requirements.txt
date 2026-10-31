@@ -1,0 +1,11 @@
+# Versiones compatibles con las constraints de apache-airflow 3.3.2 (Python 3.12).
+# lightgbm y dvc no figuran en esas constraints; se resolvieron junto a ellas en la Fase 0.
+dvc==3.67.1
+joblib==1.6.0
+lightgbm==4.7.0
+numpy==2.5.3
+pandas==3.0.5
+pyarrow==25.0.1
+PyYAML==6.0.3
+scikit-learn==1.9.1
+scipy==1.18.1
