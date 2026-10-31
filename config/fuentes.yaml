@@ -1,0 +1,32 @@
+# Supuestos provisionales y configurables sobre frecuencia y disponibilidad.
+# Kaggle no publica estas fechas y los docentes no las confirmaron.
+ventas:
+  archivo: train.csv
+  frecuencia: diaria
+  retraso_dias: 1
+
+transacciones:
+  archivo: transactions.csv
+  frecuencia: diaria
+  retraso_dias: 2
+
+promociones:
+  archivo: train.csv
+  frecuencia: semanal
+  dia_publicacion: 6           # 0 = lunes, 6 = domingo
+
+petroleo:
+  archivo: oil.csv
+  frecuencia: habil
+  retraso_dias: 1
+
+feriados:
+  archivo: holidays_events.csv
+  frecuencia: evento
+  tipos_anunciados: [Transfer, Bridge, Work Day]
+  anticipacion_anuncio_dias: 14
+  patrones_imprevistos: [Terremoto]
+
+tiendas:
+  archivo: stores.csv
+  frecuencia: cambio
