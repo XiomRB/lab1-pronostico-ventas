@@ -1,0 +1,8 @@
+=== T10b init root prepara remoto; luego UID 1000 ===
+init_ok
+escritura exit=0
+montaje real detectado
+drwxr-xr-x 3    0 0 4096 Oct 31 06:13 ..
+-rw-r--r-- 1 1000 0    0 Oct 31 06:13 .remoto-lab1
+-rw-rw-r-- 1 1000 0    0 Oct 31 06:13 prueba
+sin montaje: deteccion correcta

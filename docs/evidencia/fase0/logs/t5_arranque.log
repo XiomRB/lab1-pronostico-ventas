@@ -1,0 +1,53 @@
+time="2026-10-30T23:39:21-06:00" level=warning msg="No services to build"
+ Network lab1f0_default Creating 
+ Network lab1f0_default Created 
+ Volume lab1f0_postgres-db-volume Creating 
+ Volume lab1f0_postgres-db-volume Created 
+ Container lab1f0-postgres-1 Creating 
+ Container lab1f0-postgres-1 Created 
+ Container lab1f0-airflow-init-1 Creating 
+ Container lab1f0-airflow-init-1 Created 
+ Container lab1f0-airflow-scheduler-1 Creating 
+ Container lab1f0-airflow-apiserver-1 Creating 
+ Container lab1f0-airflow-dag-processor-1 Creating 
+ Container lab1f0-airflow-apiserver-1 Created 
+ Container lab1f0-airflow-dag-processor-1 Created 
+ Container lab1f0-airflow-scheduler-1 Created 
+ Container lab1f0-postgres-1 Starting 
+ Container lab1f0-postgres-1 Started 
+ Container lab1f0-postgres-1 Waiting 
+ Container lab1f0-postgres-1 Healthy 
+ Container lab1f0-airflow-init-1 Starting 
+ Container lab1f0-airflow-init-1 Started 
+ Container lab1f0-airflow-init-1 Waiting 
+ Container lab1f0-postgres-1 Waiting 
+ Container lab1f0-airflow-init-1 Waiting 
+ Container lab1f0-postgres-1 Waiting 
+ Container lab1f0-postgres-1 Waiting 
+ Container lab1f0-airflow-init-1 Waiting 
+ Container lab1f0-postgres-1 Healthy 
+ Container lab1f0-postgres-1 Healthy 
+ Container lab1f0-postgres-1 Healthy 
+ Container lab1f0-airflow-init-1 Exited 
+ Container lab1f0-airflow-dag-processor-1 Starting 
+ Container lab1f0-airflow-init-1 Exited 
+ Container lab1f0-airflow-scheduler-1 Starting 
+ Container lab1f0-airflow-init-1 Exited 
+ Container lab1f0-airflow-apiserver-1 Starting 
+ Container lab1f0-airflow-scheduler-1 Started 
+ Container lab1f0-airflow-dag-processor-1 Started 
+ Container lab1f0-airflow-apiserver-1 Started 
+ Container lab1f0-airflow-init-1 Waiting 
+ Container lab1f0-airflow-apiserver-1 Waiting 
+ Container lab1f0-airflow-scheduler-1 Waiting 
+ Container lab1f0-airflow-dag-processor-1 Waiting 
+ Container lab1f0-postgres-1 Waiting 
+ Container lab1f0-airflow-scheduler-1 Healthy 
+ Container lab1f0-postgres-1 Healthy 
+ Container lab1f0-airflow-init-1 Exited 
+ Container lab1f0-airflow-dag-processor-1 Healthy 
+ Container lab1f0-airflow-apiserver-1 Healthy 
+
+real	2m10.715s
+user	0m0.911s
+sys	0m0.472s

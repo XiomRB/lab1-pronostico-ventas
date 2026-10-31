@@ -1,0 +1,18 @@
+== sin libgomp1 ==
+0
+    self._handle = _dlopen(self._name, mode)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+OSError: libgomp.so.1: cannot open shared object file: No such file or directory
+exit=1
+== con libgomp1 ==
+	libgomp.so.1 (libc6,x86-64) => /lib/x86_64-linux-gnu/libgomp.so.1
+py 3.12.14 lightgbm 4.7.0 dvc 3.67.1 airflow 3.3.2 numpy 2.5.3 pandas 3.0.5 sklearn 1.9.1 pyarrow 25.0.1
+	libgomp.so.1 => /lib/x86_64-linux-gnu/libgomp.so.1 (0x00007a0daaa55000)
+No broken requirements found.
+uid=50000(airflow) gid=0(root) groups=0(root)
+git version 2.39.5
+3.67.1
+== tamanos ==
+lab1-fase0:final 3.37GB
+lab1-fase0:sin-gomp 3.33GB
+apache/airflow:3.3.2-python3.12 3.22GB

@@ -1,0 +1,65 @@
+=== ayuda ===
+                               [--dag-run-conf DAG_RUN_CONF] [--dry-run]
+                               --from-date FROM_DATE
+                               [--max-active-runs MAX_ACTIVE_RUNS]
+                               [--reprocess-behavior {none,completed,failed}]
+                               [--run-backwards]
+                               --to-date TO_DATE
+  --dag-run-conf DAG_RUN_CONF
+  --dry-run             Perform a dry run
+  --from-date FROM_DATE
+  --max-active-runs MAX_ACTIVE_RUNS
+  --reprocess-behavior {none,completed,failed}
+  --run-backwards       If set, the backfill will run tasks from the most recent logical d
+  --to-date TO_DATE     Backfill window end (inclusive). For partitioned Dags, this range 
+=== T8.1 backfill sobre fechas ya completadas (reprocess completed) ===
+Warning: No runs to create for Dag f0_orquestador in the range [2017-04-02 00:00:00+00:00, 2017-04-02 00:00:00+00:00]
+   scheduled__2017-04-01T06:00:00+00:00 success
+   scheduled__2017-04-02T06:00:00+00:00 success
+   scheduled__2017-04-03T06:00:00+00:00 failed
+   scheduled__2017-04-04T06:00:00+00:00 success
+   scheduled__2017-04-05T06:00:00+00:00 success
+lineas ingesta 04-02: antes=1 despues=1
+=== T8.2 backfill sin reprocess sobre fecha ya hecha ===
+Warning: No runs to create for Dag f0_orquestador in the range [2017-04-04 00:00:00+00:00, 2017-04-04 00:00:00+00:00]
+=== T8.3 backfill POSTERIOR a end_date (2017-04-08 y 09) ===
+2026-10-31T05:59:35.885764Z [info     ] creating dag run               [airflow.serialization.definitions.dag] loc=dag.py:615 logical_date=DateTime(2017, 4, 8, 6, 0, 0, tzinfo=Timezone('UTC')) partition_key=None run_afte
+2026-10-31T05:59:35.980319Z [info     ] Created backfill Dag run.      [airflow.models.backfill] backfill_id=1 dag_id=f0_orquestador loc=backfill.py:803 logical_date=DateTime(2017, 4, 8, 6, 0, 0, tzinfo=Timezone('UTC'))
+   backfill__2017-04-08T06:00:00+00:00 success
+lineas 04-08/09: 1
+=== T8.1b reprocess completed ===
+2026-10-31T06:00:42.070357Z [info     ] Created backfill Dag run.      [airflow.models.backfill] backfill_id=2 dag_id=f0_orquestador loc=backfill.py:803 logical_date=Date
+ingesta 04-02: antes=1 despues=2
+=== T8.2b reprocess none sobre completado ===
+airflow.models.backfill.AlreadyRunningBackfill: Another backfill is running for Dag f0_orquestador. There can be only one running backfill per Dag.
+ingesta 04-04: antes=1 despues=1
+=== T8.4 reprocess failed sobre 04-03 ===
+2026-10-31T06:01:03.965112Z [info     ] Created backfill Dag run.      [airflow.models.backfill] backfill_id=3 dag_id=f0_orquestador loc=backfill.py:803 logical_date=Date
+respaldo_intento 04-03: antes=3 despues=6
+=== T8.5 lote 2017-04-10..16 posterior a end_date, sin intervencion ===
+airflow.models.backfill.AlreadyRunningBackfill: Another backfill is running for Dag f0_orquestador. There can be only one running backfill per Dag.
+duracion lote 7 dias (1 lunes): 11s
+   backfill__2017-04-08T06:00:00+00:00 success
+   scheduled__2017-04-01T06:00:00+00:00 success
+   scheduled__2017-04-02T06:00:00+00:00 success
+   scheduled__2017-04-03T06:00:00+00:00 failed
+   scheduled__2017-04-04T06:00:00+00:00 success
+   scheduled__2017-04-05T06:00:00+00:00 success
+=== orden lote ===
+=== API con usuario ===
+token obtenido: si
+UI http=200
+=== T8.2c reprocess none ===
+2026-10-31T06:02:39.614019Z [info     ] Created backfill Dag run.      [airflow.models.backfill] backfill_id=4 dag_id=f0_orquestad
+ingesta 04-04: antes=1 despues=1
+=== T8.5b lote 2017-04-10..16 ===
+2026-10-31T06:03:01.581311Z [info     ] Created backfill Dag run.      [airflow.models.backfill] backfill_id=5 dag_id=f0_orquestad
+duracion 7 dias (1 lunes): 22s
+   backfill__2017-04-08T06:00:00+00:00 success
+   backfill__2017-04-10T06:00:00+00:00 running
+   backfill__2017-04-11T06:00:00+00:00 queued
+   backfill__2017-04-12T06:00:00+00:00 queued
+   backfill__2017-04-13T06:00:00+00:00 queued
+   backfill__2017-04-14T06:00:00+00:00 queued
+   backfill__2017-04-15T06:00:00+00:00 queued
+   backfill__2017-04-16T06:00:00+00:00 queued

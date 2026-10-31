@@ -1,0 +1,18 @@
+antes: objetos=20 huella=431885eccc8bb0c51029
+ Volume lab1f0_postgres-db-volume Removing 
+ Volume lab1f0_postgres-db-volume Removed 
+ Network lab1f0_default Removed 
+contenedores lab1f0: 0 | volumenes: 0
+tras down -v: objetos=20 huella=431885eccc8bb0c51029
+PASA: remoto intacto
+otro proyecto sigue activo: Up About an hour (healthy)
+ Container lab1f0-airflow-dag-processor-1 Healthy 
+ Container lab1f0-postgres-1 Healthy 
+
+real	1m52.187s
+user	0m0.687s
+sys	0m0.442s
+airflow-apiserver Up 48 seconds (healthy)
+airflow-dag-processor Up 1 second
+airflow-scheduler Up 1 second
+postgres Up About a minute (healthy)

@@ -1,0 +1,126 @@
+=== recuperacion correcta: se borra el contenido, no las referencias ===
+5 files fetched and 3 files added
+pull exit=0
+entrega_1.parquet
+tienda1,10
+
+=== A. UID=host (1000:0) sin identidad Git ===
+uid=1000 gid=0(root) groups=0(root)
+HOME=/
+git version 2.39.5
+HEAD=57409ae codigo v2
+git log exit=0
+?? data/
+status exit=0
+write exit=0
+    from dvc.cli import main
+ModuleNotFoundError: No module named 'dvc'
+dvc add exit=1
+ModuleNotFoundError: No module named 'dvc'
+dvc push exit=1
+ModuleNotFoundError: No module named 'dvc'
+commit-tree exit=0 c=8f9276b6780d18d4a3ef2371976af188d87b25ae
+update-ref exit=0
+
+=== B. UID=host con identidad por entorno ===
+uid=1000 gid=0(root) groups=0(root)
+HOME=/tmp
+git version 2.39.5
+HEAD=57409ae codigo v2
+git log exit=0
+?? data/
+status exit=0
+write exit=0
+    from dvc.cli import main
+ModuleNotFoundError: No module named 'dvc'
+dvc add exit=1
+ModuleNotFoundError: No module named 'dvc'
+dvc push exit=1
+ModuleNotFoundError: No module named 'dvc'
+commit-tree exit=0 c=ef4c00b1e14a96a6bd60b1443c00a93e633eb6e0
+update-ref exit=0
+
+=== host lee lo escrito por el contenedor ===
+-rw-r--r-- 1 1000 1000  7 Oct 30 23:36 entrega_4.parquet
+-rw-r--r-- 1 1000 0    16 Oct 30 23:37 entrega_c_1000.parquet
+-rw-r--r-- 1 <usuario> root 41 Oct 30 23:37 .git/refs/heads/publicaciones
+ef4c00b lab1 pub desde contenedor
+{}
+
+{"data/almacen.dvc": [{"changed outs": {"data/almacen": "modified"}}]}
+
+?? data/
+	scmrepo = 3.6.2
+Cache types: hardlink, symlink
+Caches: local
+Remotes: local
+Repo: dvc, git
+Repo.site_cache_dir: /var/tmp/dvc/repo/81a4f614f37e2c6cdf13e460a448405f
+
+=== C. UID por defecto del imagen (50000), como si faltara AIRFLOW_UID ===
+uid=50000(airflow) gid=0(root) groups=0(root)
+HOME=<home-contenedor>
+git version 2.39.5
+fatal: detected dubious ownership in repository at '/opt/lab1'
+To add an exception for this directory, call:
+
+	git config --global --add safe.directory /opt/lab1
+git log exit=128
+fatal: detected dubious ownership in repository at '/opt/lab1'
+To add an exception for this directory, call:
+
+	git config --global --add safe.directory /opt/lab1
+status exit=0
+write exit=1
+bash: line 3: data/almacen/entrega_c_50000.parquet: Permission denied
+
+Having any troubles? Hit us up at https://dvc.org/support, we are always happy to help!
+dvc add exit=255
+Having any troubles? Hit us up at https://dvc.org/support, we are always happy to help!
+dvc push exit=255
+Having any troubles? Hit us up at https://dvc.org/support, we are always happy to help!
+fatal: detected dubious ownership in repository at '/opt/lab1'
+To add an exception for this directory, call:
+
+	git config --global --add safe.directory /opt/lab1
+fatal: detected dubious ownership in repository at '/opt/lab1'
+To add an exception for this directory, call:
+
+	git config --global --add safe.directory /opt/lab1
+fatal: detected dubious ownership in repository at '/opt/lab1'
+To add an exception for this directory, call:
+
+	git config --global --add safe.directory /opt/lab1
+fatal: detected dubious ownership in repository at '/opt/lab1'
+To add an exception for this directory, call:
+
+	git config --global --add safe.directory /opt/lab1
+fatal: detected dubious ownership in repository at '/opt/lab1'
+To add an exception for this directory, call:
+
+	git config --global --add safe.directory /opt/lab1
+fatal: detected dubious ownership in repository at '/opt/lab1'
+To add an exception for this directory, call:
+
+	git config --global --add safe.directory /opt/lab1
+commit-tree exit=128 c=
+fatal: detected dubious ownership in repository at '/opt/lab1'
+To add an exception for this directory, call:
+
+	git config --global --add safe.directory /opt/lab1
+update-ref exit=128
+
+=== D. sin montar el remoto (ruta ausente) ===
+ModuleNotFoundError: No module named 'dvc'
+    from dvc.cli import main
+ModuleNotFoundError: No module named 'dvc'
+push exit=1
+ls: cannot access '/opt/dvc-storage': No such file or directory
+drwxr-xr-x 1 root root 4096 Oct 31 05:37 /opt
+SIN CENTINELA
+
+=== E. repo montado fuera de /opt (montaje hermano en /workspace), ruta relativa ===
+ModuleNotFoundError: No module named 'dvc'
+ModuleNotFoundError: No module named 'dvc'
+push exit=1
+CENTINELA_OK

@@ -1,0 +1,116 @@
+
+=== T2.1 init + remoto (ruta dada desde la raiz) ===
+    url = ../../dvc-storage/lab1
+
+=== T2.2 .dvc fuera de /data ignorada; publicacion ya en solo lectura ===
+ERROR: unrecognized arguments: --file dvc_refs/almacen.dvc
+  dvc add almacen exit=254
+ERROR: unrecognized arguments: --file dvc_refs/publicado_corte=2017-04-03_rev=1.dvc
+  dvc add pub exit=254
+total 16
+dr-xr-xr-x 2 <usuario> <usuario> 4096 Oct 30 23:34 .
+drwxr-xr-x 3 <usuario> <usuario> 4096 Oct 30 23:34 ..
+-r--r--r-- 1 <usuario> <usuario>   31 Oct 30 23:34 manifest.json
+-r--r--r-- 1 <usuario> <usuario>   11 Oct 30 23:34 pronostico.csv
+dr-xr-xr-x 2 <usuario> <usuario> 4096 Oct 30 23:34 data/publicado/corte=2017-04-03/rev=1
+cat: 'dvc_refs/publicado_corte=2017-04-03_rev=1.dvc': No such file or directory
+-- git status --
+
+=== T2.3 push y status -c ===
+There are no data or pipelines tracked in this project yet.
+See <https://dvc.org/doc/start> to get started!
+Everything is up to date.
+push exit=0
+See <https://dvc.org/doc/start> to get started!
+find: ‘../dvc-storage/lab1’: No such file or directory
+archivos en remoto: 0
+
+=== T2.4 commit de publicacion con indice temporal ===
+OK: indice, HEAD, rama y status IDENTICOS
+3a0f86da1669ded0
+afa5c35b3d04819449aa09e411e6f8cc80aa7500
+refs/heads/main
+e3b0c44298fc1c14
+* 038f173 publicacion pub/2017-04-03-r1
+* afa5c35 codigo base
+038f173 afa5c35 publicacion pub/2017-04-03-r1
+
+=== T2.5 segunda publicacion, almacen cambia; repo principal evoluciona ===
+ERROR: unrecognized arguments: --file dvc_refs/almacen.dvc
+ERROR: unrecognized arguments: --file dvc_refs/publicado_corte=2017-04-10_rev=1.dvc
+  dvc add pub exit=254
+Everything is up to date.
+*   31f92ab publicacion pub/2017-04-10-r1
+|\  
+| * 4512dc6 codigo v2
+* | 038f173 publicacion pub/2017-04-03-r1
+|/  
+* afa5c35 codigo base
+archivos en tag r2:
+.dvc/.gitignore
+.dvc/config
+.dvcignore
+.gitignore
+airflow/Dockerfile
+dvc_refs/.gitkeep
+requirements.txt
+src/modulo.py
+
+=== T2.6 arbol limpio: criterio solo sobre codigo ===
+codigo limpio segun diff de rutas de codigo
+cambio de codigo detectado
+
+=== T2.7 Recuperacion en clon limpio: borra datos y cache ===
+def f(): return 1
+Everything is up to date.
+pull exit=0
+sha256sum: 'data/publicado/corte=2017-04-03/rev=1/pronostico.csv': No such file or directory
+almacen en esa version:
+ls: cannot access 'data/almacen': No such file or directory
+ls: cannot access 'data/publicado/corte=2017-04-03/rev=1': No such file or directory
+ls: cannot access 'data/publicado/corte=2017-04-03/rev=1': No such file or directory
+-- ir a r2 con dvc checkout --
+Everything is up to date.
+exit=0
+ls: cannot access 'data/almacen': No such file or directory
+ls: cannot access 'data/publicado': No such file or directory
+-- volver a r1 --
+checkout exit=0
+ls: cannot access 'data/almacen': No such file or directory
+ls: cannot access 'data/publicado': No such file or directory
+See <https://dvc.org/doc/start> to get started!
+
+=== T2.8 inmutabilidad: intento de sobrescribir ===
+<sandbox>/t2_git_dvc.sh: line 74: data/publicado/corte=2017-04-03/rev=1/pronostico.csv: Permission denied
+escritura exit=1
+rm: cannot remove 'data/publicado/corte=2017-04-03/rev=1/manifest.json': Permission denied
+borrado exit=1
+
+=== T2.9 fallos del respaldo ===
+-- remoto solo lectura --
+ERROR: unrecognized arguments: --file dvc_refs/almacen.dvc
+chmod: cannot access '<sandbox>/dvc-storage': No such file or directory
+Everything is up to date.
+push exit=0
+There are no data or pipelines tracked in this project yet.
+See <https://dvc.org/doc/start> to get started!
+status-c exit=0
+chmod: cannot access '<sandbox>/dvc-storage': No such file or directory
+-- remoto borrado --
+mv: cannot stat '<sandbox>/dvc-storage': No such file or directory
+There are no data or pipelines tracked in this project yet.
+See <https://dvc.org/doc/start> to get started!
+status-c exit=0
+Everything is up to date.
+push exit=0
+se recreo vacio?  archivos=0
+mv: cannot stat '<sandbox>/dvc-storage.bak': No such file or directory
+-- objeto corrupto en remoto --
+find: ‘<sandbox>/dvc-storage’: No such file or directory
+chmod: cannot access '': No such file or directory
+cp: cannot stat '': No such file or directory
+<sandbox>/t2_git_dvc.sh: line 80: : No such file or directory
+See <https://dvc.org/doc/start> to get started!
+status-c exit=0
+cp: cannot stat '/tmp/_o': No such file or directory
+rm: cannot remove '/tmp/_o': No such file or directory

@@ -1,0 +1,111 @@
+
+=== T2.1 init y remoto ===
+  PASA: url relativa a .dvc apunta a hermana del repo
+
+=== T2.2 dvc add en publicacion YA en solo lectura ===
+  PASA: dvc add almacen
+  PASA: dvc add publicacion read-only
+total 16
+dr-xr-xr-x 2 <usuario> <usuario> 4096 Oct 30 23:36 .
+drwxr-xr-x 3 <usuario> <usuario> 4096 Oct 30 23:36 ..
+-r--r--r-- 1 <usuario> <usuario>   31 Oct 30 23:36 manifest.json
+-r--r--r-- 1 <usuario> <usuario>   11 Oct 30 23:36 pronostico.csv
+dr-xr-xr-x 2 <usuario> <usuario> 4096 Oct 30 23:36 data/publicado/corte=2017-04-03/rev=1
+outs:
+- md5: db3b39a3650f444d8095b0828753e8ae.dir
+  size: 42
+  nfiles: 2
+  hash: md5
+  path: rev=1
+  PASA: existe .dvc de publicacion
+  PASA: git no ve datos
+-- git status --
+?? data/almacen.dvc
+?? data/publicado/corte=2017-04-03/rev=1.dvc
+
+=== T2.3 push y status -c ===
+	new:                data/publicado/corte=2017-04-03/rev=1
+	new:                data/publicado/corte=2017-04-03/rev=1/pronostico.csv
+	new:                data/almacen
+5 files pushed
+  PASA: push
+Cache and remote 'local' are in sync.
+  PASA: status -c limpio
+  PASA: remoto tiene objetos
+5
+
+=== T2.4 commit de publicacion con indice temporal ===
+  PASA: indice, HEAD, rama y status identicos
+  PASA: publicacion contiene .dvc
+  PASA: publicacion sin datos
+4b26099 padres=88cdfde publicacion pub/2017-04-03-r1
+
+ data/almacen.dvc                          | 6 ++++++
+ data/publicado/corte=2017-04-03/rev=1.dvc | 6 ++++++
+ 2 files changed, 12 insertions(+)
+
+=== T2.5 segunda publicacion con codigo y almacen nuevos ===
+5 files pushed
+*   2cd8857 publicacion pub/2017-04-10-r1
+|\  
+| * 57409ae codigo v2
+* | 4b26099 publicacion pub/2017-04-03-r1
+|/  
+* 88cdfde codigo base
+  PASA: r2 conserva .dvc de r1
+  PASA: r2 usa codigo v2
+  PASA: r1 sigue con codigo v1
+
+=== T2.6 estado del arbol de main tras publicar ===
+?? data/almacen.dvc
+?? data/publicado/corte=2017-04-03/rev=1.dvc
+?? data/publicado/corte=2017-04-10/rev=1.dvc
+  PASA: main no muestra codigo sucio
+
+=== T2.7 Recuperacion en clon limpio, sin cache ===
+  PASA: clon sin datos ni cache
+  PASA: codigo v1
+5 files fetched and 3 files added
+  PASA: pull r1
+  PASA: hash publicado identico
+  PASA: almacen de r1 solo tiene entrega_1
+entrega_1.parquet
+total 8
+-rw-r--r-- 1 <usuario> <usuario> 31 Oct 30 23:36 manifest.json
+-rw-r--r-- 1 <usuario> <usuario> 11 Oct 30 23:36 pronostico.csv
+5 files fetched and 3 files added
+  PASA: almacen de r2 tiene 2 entregas
+M       data/almacen/
+D       data/publicado/corte=2017-04-10/rev=1/
+  PASA: volver a r1 con dvc checkout
+corte=2017-04-03
+corte=2017-04-10
+Data and pipelines are up to date.
+
+=== T2.8 inmutabilidad ===
+  PASA: no se puede escribir
+  PASA: no se puede borrar
+
+=== T2.9 fallos del respaldo ===
+-- remoto solo lectura --
+
+Having any troubles? Hit us up at https://dvc.org/support, we are always happy to help!
+  push exit=255
+	new:                data/almacen/entrega_3.parquet
+	new:                data/almacen
+  status-c exit=0
+-- remoto ausente --
+	new:                data/publicado/corte=2017-04-10/rev=1/pronostico.csv
+	new:                data/almacen/entrega_2.parquet
+  status-c exit=0
+10 files pushed
+  push exit=0
+  recreado=<sandbox>/dvc-storage archivos=10
+-- objeto corrupto en remoto --
+2 files pushed
+Cache and remote 'local' are in sync.
+  status-c exit=0
+Everything is up to date.
+  pull con corrupto exit=0
+
+FALLOS=0

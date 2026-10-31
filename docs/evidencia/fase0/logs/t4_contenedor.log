@@ -1,0 +1,49 @@
+=== A. entrypoint real, UID=host, SIN identidad Git ===
+uid=1000(default) gid=0(root) groups=0(root)
+HOME=<home-contenedor>
+<home-contenedor>/.local/lib/python3.12/site-packages/dvc/__init__.py
+HEAD=57409ae codigo v2
+git log exit=0
+write exit=0
+	dvc config core.autostage true
+dvc add exit=0
+3 files pushed
+dvc push exit=0
+status -c json: {}
+commit-tree exit=0 c=a369c5f1
+update-ref exit=0
+
+=== B. entrypoint real, UID=host, con identidad ===
+uid=1000(default) gid=0(root) groups=0(root)
+HOME=<home-contenedor>
+<home-contenedor>/.local/lib/python3.12/site-packages/dvc/__init__.py
+HEAD=57409ae codigo v2
+git log exit=0
+write exit=0
+	dvc config core.autostage true
+dvc add exit=0
+2 files pushed
+dvc push exit=0
+status -c json: {}
+commit-tree exit=0 c=d51691e8
+update-ref exit=0
+
+=== host verifica ===
+-rw-r--r-- 1 1000 0    17 Oct 30 23:38 entrega_c_1000.parquet
+-rw-r--r-- 1 1000 1000  2 Oct 30 23:37 entrega_d.parquet
+d51691e lab1 pub desde contenedor 1000
+status -c: {}
+status: {}
+
+=== D. sin montar remoto, entrypoint real ===
+	dvc config core.autostage true
+
+Having any troubles? Hit us up at https://dvc.org/support, we are always happy to help!
+push exit=255
+ls: cannot access '/opt/dvc-storage': No such file or directory
+SIN CENTINELA: no se debe hacer push
+
+=== F. repo y remoto bajo /opt: ruta alterna raiz escribible (/tmp) sin montaje ===
+Having any troubles? Hit us up at https://dvc.org/support, we are always happy to help!
+push exit=255
+objetos en ruta efimera: 0

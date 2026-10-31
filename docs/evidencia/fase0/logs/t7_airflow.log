@@ -1,0 +1,32 @@
+=== T7.1 catchup automatico, sin intervencion ===
+   scheduled__2017-04-01T06:00:00+00:00 success
+   scheduled__2017-04-02T06:00:00+00:00 success
+   scheduled__2017-04-03T06:00:00+00:00 failed
+   scheduled__2017-04-04T06:00:00+00:00 success
+   scheduled__2017-04-05T06:00:00+00:00 success
+   2017-04-01 f0_ingesta
+   2017-04-02 f0_ingesta
+   2017-04-03 f0_ingesta
+   2017-04-03 f0_pronostico
+   2017-04-03 respaldo_intento
+   2017-04-03 respaldo_intento
+   2017-04-03 respaldo_intento
+   2017-04-03 seguimiento
+   2017-04-04 f0_ingesta
+   2017-04-05 f0_ingesta
+=== T7.2 errores de conexion en el arranque ===
+0
+=== T7.3 pool serial ===
+                                                                      
+=== T7.4 bandeja ro + dvc en tarea ===
+                                                                      
+   1793425971.632 p0_ini
+   1793425974.632 p0_fin
+   1793425975.085 p1_ini
+   1793425977.808 bandeja_RECHAZADO_30
+   1793425978.086 p1_fin
+   1793425978.517 p2_ini
+   1793425980.361 dvc_rc0_{}
+   1793425981.518 p2_fin
+ventas_2017-04-01.csv
+   intervalos: 3 solapados: 0

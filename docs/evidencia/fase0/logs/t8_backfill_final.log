@@ -1,0 +1,27 @@
+=== T8.2c reprocess none sobre 04-04 (A=2) ===
+  aceptado tras 1 intento(s)
+=== T8.5c lote 7 dias posterior a end_date ===
+  aceptado tras 4 intento(s)
+T8.2c ingesta 04-04: antes=2 despues=2
+terminados=7 en 73s (incluye espera del backfill previo)
+   backfill__2017-04-10T06:00:00+00:00 success
+   backfill__2017-04-11T06:00:00+00:00 success
+   backfill__2017-04-12T06:00:00+00:00 success
+   backfill__2017-04-13T06:00:00+00:00 success
+   backfill__2017-04-14T06:00:00+00:00 success
+   backfill__2017-04-15T06:00:00+00:00 success
+   backfill__2017-04-16T06:00:00+00:00 success
+=== orden real ===
+  1793426584.787 2017-04-10 f0_ingesta
+  1793426590.669 2017-04-10 f0_pronostico
+  1793427091.619 2017-04-10 f0_ingesta
+  1793427096.633 2017-04-10 f0_pronostico
+  1793427101.091 2017-04-10 respaldo_intento
+  1793427103.246 2017-04-10 seguimiento
+  1793427108.009 2017-04-11 f0_ingesta
+  1793427114.160 2017-04-12 f0_ingesta
+  1793427119.399 2017-04-13 f0_ingesta
+  1793427125.267 2017-04-14 f0_ingesta
+  1793427130.979 2017-04-15 f0_ingesta
+  1793427135.891 2017-04-16 f0_ingesta
+  s entre inicios diarios: [506.8, 16.4, 6.2, 5.2, 5.9, 5.7, 4.9]

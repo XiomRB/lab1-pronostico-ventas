@@ -1,0 +1,39 @@
+-rw-r--r-- 1 <usuario> <usuario> 11 Oct 30 23:36 <sandbox>/dvc-storage/lab1/files/md5/94/34d9d6b2d6b3edf513ac77e09a5ad5
+=== objeto corrupto en remoto, clon NUEVO, modo=default ===
+A       data/almacen/
+A       data/publicado/corte=2017-04-03/rev=1/
+5 files fetched and 3 files added
+pull exit=0
+-rw-r--r-- 1 <usuario> <usuario> 18 Oct 30 23:36 data/publicado/corte=2017-04-03/rev=1/pronostico.csv
+HASH DISTINTO: dato corrupto restaurado
+Data and pipelines are up to date.
+=== objeto corrupto en remoto, clon NUEVO, modo=verify_true ===
+ERROR: failed to pull data from the cloud - Checkout failed for following targets:
+data/publicado/corte=2017-04-03/rev=1
+Is your cache up to date?
+<https://error.dvc.org/missing-files>
+pull exit=1
+ls: cannot access 'data/publicado/corte=2017-04-03/rev=1/pronostico.csv': No such file or directory
+data/publicado/corte=2017-04-03/rev=1.dvc:
+	changed outs:
+		not in cache:       data/publicado/corte=2017-04-03/rev=1
+=== repeticion del caso previo: mismo clon, cache borrada ===
+5 files fetched and 3 files added
+Everything is up to date.
+exit=0
+ls: cannot access 'data': No such file or directory
+total 20
+drwxr-xr-x 3 <usuario> <usuario> 4096 Oct 30 23:36 .
+drwxr-xr-x 6 <usuario> <usuario> 4096 Oct 30 23:36 ..
+-rw-r--r-- 1 <usuario> <usuario>   26 Oct 30 23:36 .gitignore
+-rw-r--r-- 1 <usuario> <usuario>  100 Oct 30 23:36 config
+drwxr-xr-x 2 <usuario> <usuario> 4096 Oct 30 23:36 tmp
+=== centinela y JSON ===
+{}
+ <- json con pendiente/en sincronia
+rc=0
+{"data/almacen": "new", "data/almacen/entrega_4.parquet": "new"}
+
+2 files pushed
+{}
+

@@ -1,0 +1,106 @@
+# Prototipo Fase 0 (LocalExecutor, sin celery/redis/triggerer).
+name: lab1f0
+x-airflow-common:
+  &airflow-common
+  image: lab1-fase0:final
+  environment:
+    &airflow-common-env
+    AIRFLOW__CORE__EXECUTOR: LocalExecutor
+    AIRFLOW__CORE__PARALLELISM: 4
+    AIRFLOW__CORE__AUTH_MANAGER: airflow.providers.fab.auth_manager.fab_auth_manager.FabAuthManager
+    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://<usuario>:<clave>@postgres/airflow
+    AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'false'
+    AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+    AIRFLOW__CORE__DAGS_FOLDER: /opt/lab1/dags
+    AIRFLOW__CORE__EXECUTION_API_SERVER_URL: 'http://airflow-apiserver:8080/execution/'
+    AIRFLOW__DAG_PROCESSOR__REFRESH_INTERVAL: 10
+    AIRFLOW__DAG_PROCESSOR__MIN_FILE_PROCESS_INTERVAL: 10
+    AIRFLOW__API_AUTH__JWT_SECRET: <generado-localmente>
+    AIRFLOW__API_AUTH__JWT_ISSUER: airflow
+    AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK: 'true'
+    GIT_AUTHOR_NAME: lab1-airflow
+    GIT_AUTHOR_EMAIL: lab1@local
+    GIT_COMMITTER_NAME: lab1-airflow
+    GIT_COMMITTER_EMAIL: lab1@local
+    F0_FIN: ${F0_FIN:-2017-04-05}
+  volumes:
+    - ./logs:/opt/airflow/logs
+    - ..:/opt/lab1
+    - ../data/bandeja:/opt/lab1/data/bandeja:ro
+    - ../../dvc-storage/lab1:/opt/dvc-storage/lab1
+  user: "${AIRFLOW_UID:-50000}:0"
+  depends_on:
+    &airflow-common-depends-on
+    postgres:
+      condition: service_healthy
+
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: <usuario>
+      POSTGRES_PASSWORD: <clave>
+      POSTGRES_DB: airflow
+    volumes:
+      - postgres-db-volume:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "airflow"]
+      interval: 10s
+      retries: 5
+      start_period: 5s
+
+  airflow-init:
+    <<: *airflow-common
+    entrypoint: /bin/bash
+    command:
+      - -c
+      - |
+        mkdir -p /opt/airflow/logs && chown -R "${AIRFLOW_UID:-50000}:0" /opt/airflow/logs
+        /entrypoint airflow version
+        /entrypoint airflow pools set pesado 1 "tareas pesadas serializadas"
+    environment:
+      <<: *airflow-common-env
+      _AIRFLOW_DB_MIGRATE: 'true'
+      _AIRFLOW_WWW_USER_CREATE: 'true'
+      _AIRFLOW_WWW_USER_USERNAME: <usuario>
+      _AIRFLOW_WWW_USER_PASSWORD: <clave>
+    user: "0:0"
+
+  airflow-apiserver:
+    <<: *airflow-common
+    command: api-server
+    ports:
+      - "18080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/api/v2/monitor/health"]
+      interval: 15s
+      timeout: 10s
+      retries: 8
+      start_period: 30s
+    depends_on:
+      <<: *airflow-common-depends-on
+      airflow-init:
+        condition: service_completed_successfully
+
+  airflow-scheduler:
+    <<: *airflow-common
+    command: scheduler
+    depends_on:
+      <<: *airflow-common-depends-on
+      airflow-init:
+        condition: service_completed_successfully
+      airflow-apiserver:
+        condition: service_healthy
+
+  airflow-dag-processor:
+    <<: *airflow-common
+    command: dag-processor
+    depends_on:
+      <<: *airflow-common-depends-on
+      airflow-init:
+        condition: service_completed_successfully
+      airflow-apiserver:
+        condition: service_healthy
+
+volumes:
+  postgres-db-volume:

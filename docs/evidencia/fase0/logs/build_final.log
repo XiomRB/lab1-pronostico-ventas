@@ -1,0 +1,111 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 574B 0.0s done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/apache/airflow:3.3.2-python3.12
+#2 DONE 0.1s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [internal] load build context
+#4 DONE 0.0s
+
+#5 [sin_gomp 1/3] FROM docker.io/apache/airflow:3.3.2-python3.12@sha256:9df9c8be4096b9cc626bd7cb1f2b8c712eef66c59c615f8c7e6200871ca10bd1
+#5 resolve docker.io/apache/airflow:3.3.2-python3.12@sha256:9df9c8be4096b9cc626bd7cb1f2b8c712eef66c59c615f8c7e6200871ca10bd1 0.1s done
+#5 DONE 0.1s
+
+#4 [internal] load build context
+#4 transferring context: 37B done
+#4 DONE 0.0s
+
+#6 [sin_gomp 2/3] COPY requirements.txt /tmp/requirements.txt
+#6 CACHED
+
+#7 [sin_gomp 3/3] RUN pip install --no-cache-dir "apache-airflow==3.3.2" -r /tmp/requirements.txt       --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-3.3.2/constraints-3.12.txt"
+#7 CACHED
+
+#8 [final 1/2] RUN apt-get update && apt-get install -y --no-install-recommends libgomp1 && rm -rf /var/lib/apt/lists/*
+#8 1.623 Get:1 http://deb.debian.org/debian bookworm InRelease [151 kB]
+#8 2.551 Get:2 http://deb.debian.org/debian bookworm-updates InRelease [55.4 kB]
+#8 2.665 Get:3 http://deb.debian.org/debian-security bookworm-security InRelease [34.8 kB]
+#8 4.555 Get:4 http://deb.debian.org/debian bookworm/main amd64 Packages [8790 kB]
+#8 4.758 Get:5 https://apt.postgresql.org/pub/repos/apt bookworm-pgdg InRelease [189 kB]
+#8 4.801 Get:6 https://download.docker.com/linux/debian bookworm InRelease [46.6 kB]
+#8 4.912 Get:7 https://packages.microsoft.com/debian/12/prod bookworm InRelease [3618 B]
+#8 5.240 Get:8 https://archive.mariadb.org/mariadb-10.11/repo/debian bookworm InRelease [15.6 kB]
+#8 5.536 Get:9 https://packages.microsoft.com/debian/12/prod bookworm/main amd64 Packages [596 kB]
+#8 5.607 Get:10 https://download.docker.com/linux/debian bookworm/stable amd64 Packages [86.8 kB]
+#8 6.443 Get:11 https://archive.mariadb.org/mariadb-10.11/repo/debian bookworm/main arm64 Packages [17.7 kB]
+#8 6.470 Get:12 https://apt.postgresql.org/pub/repos/apt bookworm-pgdg/main amd64 Packages [935 kB]
+#8 7.096 Get:13 https://archive.mariadb.org/mariadb-10.11/repo/debian bookworm/main amd64 Packages [19.9 kB]
+#8 9.482 Get:14 https://packages.microsoft.com/debian/12/prod bookworm/main all Packages [576 B]
+#8 9.582 Get:15 https://packages.microsoft.com/debian/12/prod bookworm/main arm64 Packages [461 kB]
+#8 11.23 Get:16 https://apt.postgresql.org/pub/repos/apt bookworm-pgdg/main arm64 Packages [922 kB]
+#8 20.12 Get:17 http://deb.debian.org/debian bookworm-updates/main amd64 Packages [6924 B]
+#8 20.37 Get:18 http://deb.debian.org/debian-security bookworm-security/main amd64 Packages [359 kB]
+#8 21.85 Fetched 12.7 MB in 21s (606 kB/s)
+#8 21.85 Reading package lists...
+#8 23.23 Reading package lists...
+#8 24.25 Building dependency tree...
+#8 24.52 Reading state information...
+#8 24.87 The following NEW packages will be installed:
+#8 24.88   libgomp1
+#8 25.24 0 upgraded, 1 newly installed, 0 to remove and 18 not upgraded.
+#8 25.24 Need to get 116 kB of archives.
+#8 25.24 After this operation, 319 kB of additional disk space will be used.
+#8 25.24 Get:1 http://deb.debian.org/debian bookworm/main amd64 libgomp1 amd64 12.2.0-14+deb12u1 [116 kB]
+#8 28.32 Fetched 116 kB in 2s (64.6 kB/s)
+#8 28.38 Selecting previously unselected package libgomp1:amd64.
+#8 28.38 (Reading database ... 
+(Reading database ... 5%
+(Reading database ... 10%
+(Reading database ... 15%
+(Reading database ... 20%
+(Reading database ... 25%
+(Reading database ... 30%
+(Reading database ... 35%
+(Reading database ... 40%
+(Reading database ... 45%
+(Reading database ... 50%
+(Reading database ... 55%
+(Reading database ... 60%
+(Reading database ... 65%
+(Reading database ... 70%
+(Reading database ... 75%
+(Reading database ... 80%
+(Reading database ... 85%
+(Reading database ... 90%
+(Reading database ... 95%
+(Reading database ... 100%
+(Reading database ... 12575 files and directories currently installed.)
+#8 28.49 Preparing to unpack .../libgomp1_12.2.0-14+deb12u1_amd64.deb ...
+#8 28.51 Unpacking libgomp1:amd64 (12.2.0-14+deb12u1) ...
+#8 28.62 Setting up libgomp1:amd64 (12.2.0-14+deb12u1) ...
+#8 28.63 Processing triggers for libc-bin (2.36-9+deb12u14) ...
+#8 DONE 32.6s
+
+#9 [final 2/2] RUN python -c "import lightgbm; print('lightgbm', lightgbm.__version__)"
+#9 13.08 lightgbm 4.7.0
+#9 DONE 15.5s
+
+#10 exporting to image
+#10 exporting layers
+#10 exporting layers 2.9s done
+#10 exporting manifest sha256:7905a8aad0f682052ad2224d5fbf7377c912933935e97215c8ae04b0edb9fb7d 0.1s done
+#10 exporting config sha256:99a2d72ebeb300b9a0101d755eae050bedc6f324dd9d60e86b53bf00fe556c1c 0.0s done
+#10 exporting attestation manifest sha256:e9df8ede1f1cc61a32e0fe68e30952dcb8da771e864597eff57d6167825482ee
+#10 exporting attestation manifest sha256:e9df8ede1f1cc61a32e0fe68e30952dcb8da771e864597eff57d6167825482ee 0.1s done
+#10 exporting manifest list sha256:c49e61bf159c38b8f97b69974c76ecc0fd739d759b32c1dd9fd9fad74bc9bb55 0.0s done
+#10 naming to docker.io/library/lab1-fase0:final
+#10 naming to docker.io/library/lab1-fase0:final done
+#10 unpacking to docker.io/library/lab1-fase0:final
+#10 unpacking to docker.io/library/lab1-fase0:final 1.4s done
+#10 DONE 4.9s
+
+real	0m55.547s
+user	0m0.609s
+sys	0m0.455s

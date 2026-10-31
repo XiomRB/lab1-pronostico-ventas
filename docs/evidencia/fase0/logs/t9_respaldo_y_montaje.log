@@ -1,0 +1,31 @@
+=== T9.1 respaldo .tar + SHA-256 ===
+d4a1f4e26c6a922f6dab5e0e
+40960 bytes
+=== T9.2 verificacion antes de restaurar ===
+dvc-storage-lab1.tar: OK
+8a8d7644b2740328
+alterado.tar: FAILED
+sha256sum: WARNING: 1 computed checksum did NOT match
+=== T9.3 restaurar en otro lugar, clon nuevo, verify true en config compartida ===
+['remote "local"']
+    url = ../../dvc-storage/lab1
+    verify = true
+5 files fetched and 3 files added
+pull exit=0
+tienda1,10
+entrega_1.parquet
+{}
+
+centinela_restaurado
+=== T9.4 verify true: push y pull con objeto corrupto en remoto restaurado ===
+5 files fetched and 1 file added
+ERROR: failed to pull data from the cloud - Checkout failed for following targets:
+pull exit=1
+ls: cannot access 'data/publicado/corte=2017-04-03/rev=1/': No such file or directory
+=== T10 clon nuevo: carpeta del remoto inexistente al montar ===
+drwxr-xr-x 3 0 0 4096 Oct 31 06:13 /opt/dvc-storage
+drwxr-xr-x 2 0 0 4096 Oct 31 06:13 /opt/dvc-storage/lab1
+touch: cannot touch '/opt/dvc-storage/lab1/prueba': Permission denied
+escritura exit=1
+drwxr-xr-x 3 0 0 4096 Oct 31 00:13 <sandbox>/nuevo/dvc-storage
+drwxr-xr-x 2 0 0 4096 Oct 31 00:13 <sandbox>/nuevo/dvc-storage/lab1
