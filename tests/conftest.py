@@ -93,3 +93,13 @@ def proyecto_sintetico(tmp_path, raiz, monkeypatch) -> Path:
         for nombre, contenido in _csv_kaggle().items():
             archivo.writestr(nombre, contenido)
     return proyecto
+
+
+@pytest.fixture
+def proyecto_ingesta(proyecto_sintetico):
+    """Proyecto sintético con histórico y bandeja ya generados."""
+    from pronostico_ventas import config
+    from pronostico_ventas.simulador.__main__ import ejecutar
+
+    ejecutar(config.cargar(proyecto_sintetico))
+    return proyecto_sintetico
