@@ -2,12 +2,23 @@ PYTHON ?= python3.12
 VENV := .venv
 CONSTRAINTS := https://raw.githubusercontent.com/apache/airflow/constraints-3.3.2/constraints-3.12.txt
 
-.PHONY: instalar test
+REMOTO := ../dvc-storage/lab1
 
-instalar:
+.PHONY: install test prepare-remote verify-remote
+
+install:
 	$(PYTHON) -m venv $(VENV)
 	$(VENV)/bin/python -m pip install -q -r requirements-dev.txt --constraint $(CONSTRAINTS)
 	$(VENV)/bin/python -m pip check
 
 test:
 	$(VENV)/bin/python -m pytest -q
+
+prepare-remote:
+	mkdir -p $(REMOTO)
+	touch $(REMOTO)/.remoto-lab1
+
+verify-remote:
+	@test -f $(REMOTO)/.remoto-lab1 || (echo "Falta el centinela de $(REMOTO)" >&2; exit 1)
+	@test "$$($(VENV)/bin/dvc status -c --json)" = "{}" || (echo "Remoto sin sincronizar" >&2; exit 1)
+	@echo "Remoto local sincronizado"
