@@ -15,19 +15,19 @@ El proyecto está en construcción por fases. Este README se completará con las
 Requisitos: Python 3.12, Git y `libgomp1`.
 
 ```bash
-make instalar
+make install
 make test
 ```
 
-`make instalar` crea un entorno propio en `.venv` y aplica las constraints oficiales de Airflow 3.3.2.
+`make install` crea un entorno propio en `.venv` y aplica las constraints oficiales de Airflow 3.3.2.
 
 ## Datos y DVC
 
 Git no guarda datos ni modelos. DVC es exclusivamente local y usa el remoto `../dvc-storage/lab1`, fuera del repositorio y de los volúmenes de Docker.
 
 ```bash
-make preparar-remoto
-make verificar-remoto
+make prepare-remote
+make verify-remote
 ```
 
 El remoto local no sustituye a un respaldo: comparte disco con el proyecto. Para que otro equipo recupere los datos, el almacenamiento debe entregarse o respaldarse junto con el repositorio.
