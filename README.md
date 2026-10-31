@@ -44,6 +44,27 @@ Genera la carga histórica en `data/historico/` y la bandeja en `data/bandeja/`.
 
 El contrato de la bandeja está en [docs/contrato_bandeja.md](docs/contrato_bandeja.md). Las fechas se configuran en `config/simulacion.yaml`, la disponibilidad de las fuentes en `config/fuentes.yaml` y el horizonte en `config/modelo.yaml`. Los supuestos de disponibilidad son provisionales.
 
+## Ingesta y control temporal
+
+```bash
+make ingest FECHA=2017-04-10
+```
+
+Procesa los archivos de la bandeja ya entregados en esa fecha lógica, sin modificar la bandeja. La fecha de entrega sale del nombre del archivo, nunca del reloj del sistema, por lo que repetir la ejecución o procesar periodos pasados da el mismo resultado.
+
+| Situación | Resultado |
+|---|---|
+| Archivo válido | Se guarda en `data/almacen/` como una entrega nueva |
+| Archivo inválido | Va a `data/cuarentena/` con su motivo y no llega al almacén |
+| Reentrega idéntica | Se registra como duplicado |
+| Archivo tardío o fuente sin llegar | No es un error; el dato no existe hasta que se entrega |
+| Archivo parcial, valor extremo o tienda nueva | Se acepta con una advertencia |
+| Corrección | Se conserva la versión anterior y se añade la nueva |
+
+Cada archivo procesado deja su estado, hash y motivos en `data/almacen/registro/`. Las reglas de validación están en `config/validacion.yaml`.
+
+`almacen.consulta.as_of(cfg, fuente, corte)` devuelve la última versión de cada registro conocida en una fecha de corte. Toda predicción debe construirse con esa consulta. Un dato ausente nunca se reemplaza por 0.
+
 ## Versiones
 
 | Paquete | Versión | Origen |

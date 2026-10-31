@@ -17,6 +17,8 @@ class Configuracion:
     kaggle: Path
     historico: Path
     bandeja: Path
+    almacen: Path
+    cuarentena: Path
     corte_historico: date
     fin_bandeja: date | None
     semilla: int
@@ -24,6 +26,7 @@ class Configuracion:
     dia_corte: int
     fuentes: dict[str, Any]
     incidentes: dict[str, Any]
+    validacion: dict[str, Any]
 
 
 def _leer(ruta: Path) -> dict[str, Any]:
@@ -46,6 +49,7 @@ def cargar(raiz: Path = RAIZ) -> Configuracion:
     simulacion = _leer(raiz / "config" / "simulacion.yaml")
     fuentes = _leer(raiz / "config" / "fuentes.yaml")
     modelo = _leer(raiz / "config" / "modelo.yaml")
+    validacion = _leer(raiz / "config" / "validacion.yaml")
 
     faltantes = set(FUENTES) - set(fuentes)
     if faltantes:
@@ -67,6 +71,8 @@ def cargar(raiz: Path = RAIZ) -> Configuracion:
         kaggle=_ruta(raiz, rutas["kaggle"]),
         historico=_ruta(raiz, rutas["historico"]),
         bandeja=_ruta(raiz, os.environ.get("BANDEJA_DIR") or rutas["bandeja"]),
+        almacen=_ruta(raiz, rutas["almacen"]),
+        cuarentena=_ruta(raiz, rutas["cuarentena"]),
         corte_historico=corte,
         fin_bandeja=fin,
         semilla=simulacion["semilla"],
@@ -74,4 +80,5 @@ def cargar(raiz: Path = RAIZ) -> Configuracion:
         dia_corte=modelo["dia_corte"],
         fuentes=fuentes,
         incidentes=simulacion["incidentes"],
+        validacion=validacion,
     )
