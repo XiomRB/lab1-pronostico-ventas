@@ -1,0 +1,56 @@
+# Datos y modelos: DVC es el único mecanismo de versionado.
+# Git solo puede ver archivos .dvc dentro de data/ y models/.
+/data/**
+!/data/**/
+!/data/**/*.dvc
+/models/**
+!/models/**/
+!/models/**/*.dvc
+
+# Datos y artefactos en cualquier otra ruta
+*.zip
+*.tar
+*.tar.sha256
+*.csv
+*.tsv
+*.parquet
+*.feather
+*.joblib
+*.pkl
+*.pickle
+*.lgb
+*.db
+*.sqlite
+*.sqlite3
+!/tests/fixtures/**
+
+# Documentos locales: nunca se publican
+/docs/instrucciones_lab1.md
+/docs/diseno_tecnico_lab1.md
+
+# Secretos y configuración local
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Entornos y temporales
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+*.egg-info/
+build/
+dist/
+tmp/
+.DS_Store
+
+# Airflow y herramientas locales
+/airflow/logs/
+/airflow/config/
+.claude/
+.idea/
+.vscode/
