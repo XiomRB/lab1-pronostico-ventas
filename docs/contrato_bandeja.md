@@ -8,7 +8,9 @@ La bandeja simula el sistema de origen de la empresa. El flujo la lee y nunca la
 
 La ruta por defecto es `data/bandeja`, definida en `config/simulacion.yaml`. La variable de entorno `BANDEJA_DIR` tiene prioridad y permite apuntar a otra bandeja.
 
-El simulador no escribe en una carpeta con archivos que no generó él.
+El simulador solo reemplaza archivos idénticos a los de su manifiesto. Si encuentra un archivo desconocido o alterado, o si el manifiesto falta o está corrupto, se detiene sin modificar nada, incluso con `--forzar`. Puede regenerar archivos propios que falten.
+
+Las salidas se preparan junto a su destino y se instalan por renombrado, por lo que no quedan copias parciales aunque `BANDEJA_DIR` esté en otro sistema de archivos. Si una ejecución se interrumpe, la siguiente recupera un estado completo antes de continuar.
 
 ## Nombres de archivo
 
