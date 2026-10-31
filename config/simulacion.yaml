@@ -1,0 +1,39 @@
+# Supuestos provisionales y configurables. No son requisitos confirmados por los docentes.
+rutas:
+  kaggle: data/kaggle
+  historico: data/historico
+  bandeja: data/bandeja        # BANDEJA_DIR tiene prioridad sobre este valor
+
+corte_historico: "2017-03-31"  # última fecha de negocio de la carga histórica
+fin_bandeja: null              # null usa la última fecha de ventas de Kaggle
+semilla: 20170331
+
+incidentes:
+  extremo_legitimo:
+    cantidad: 1
+  archivo_tardio:
+    cantidad: 2
+    fuente: ventas
+    dias_extra: 4
+  archivo_parcial:
+    cantidad: 2
+    fuente: ventas
+    fraccion_inicial: 0.6
+    dias_extra: 2
+  archivo_duplicado:
+    cantidad: 2
+    fuente: transacciones
+    dias_extra: 3
+  correccion:
+    cantidad: 3
+    fuente: ventas
+    filas: 20
+    factor: 1.5
+    dias_extra: 7
+  dato_invalido:
+    cantidad: 2
+    fuente: ventas
+    dias_extra: 1
+  fuente_ausente:
+    cantidad: 2
+    fuente: transacciones

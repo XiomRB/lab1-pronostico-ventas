@@ -32,6 +32,18 @@ make verify-remote
 
 El remoto local no sustituye a un respaldo: comparte disco con el proyecto. Para que otro equipo recupere los datos, el almacenamiento debe entregarse o respaldarse junto con el repositorio.
 
+## Archivos de Kaggle y simulación
+
+Coloca en `data/kaggle/` el ZIP de la competencia *Store Sales - Time Series Forecasting*, o sus CSV. Solo se usan `train.csv`, `stores.csv`, `holidays_events.csv`, `oil.csv` y `transactions.csv`.
+
+```bash
+make simulate
+```
+
+Genera la carga histórica en `data/historico/` y la bandeja en `data/bandeja/`. Si la entrada no cambió, no modifica nada.
+
+El contrato de la bandeja está en [docs/contrato_bandeja.md](docs/contrato_bandeja.md). Las fechas se configuran en `config/simulacion.yaml`, la disponibilidad de las fuentes en `config/fuentes.yaml` y el horizonte en `config/modelo.yaml`. Los supuestos de disponibilidad son provisionales.
+
 ## Versiones
 
 | Paquete | Versión | Origen |
