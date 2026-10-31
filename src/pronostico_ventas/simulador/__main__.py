@@ -3,7 +3,6 @@ import argparse
 import hashlib
 import json
 import shutil
-import tempfile
 from dataclasses import asdict
 from datetime import date
 from pathlib import Path
@@ -28,47 +27,143 @@ def _huella_entrada(contenido: str, cfg: config.Configuracion) -> str:
     return hashlib.sha256(f"{contenido}{texto}".encode()).hexdigest()
 
 
-def _vigente(cfg: config.Configuracion, entrada: str) -> bool:
-    ruta = cfg.historico / MANIFIESTO
-    if not ruta.is_file() or not cfg.bandeja.is_dir():
-        return False
-    previo = json.loads(ruta.read_text(encoding="utf-8"))
-    actuales = {r.name: r for r in cfg.historico.glob("*.parquet")}
+def _nueva(destino: Path) -> Path:
+    return destino.with_name(f".{destino.name}.nueva")
+
+
+def _respaldo(destino: Path) -> Path:
+    return destino.with_name(f".{destino.name}.anterior")
+
+
+def _eliminar(ruta: Path) -> None:
+    if ruta.exists():
+        shutil.rmtree(ruta)
+
+
+def _hashes_parquet(carpeta: Path) -> dict[str, str]:
+    return {r.name: hashlib.sha256(r.read_bytes()).hexdigest() for r in sorted(carpeta.glob("*.parquet"))}
+
+
+def _leer_manifiesto(carpeta: Path) -> dict | None:
+    """Devuelve el manifiesto, o None si falta o no se puede confiar en él."""
+    try:
+        manifiesto = json.loads((carpeta / MANIFIESTO).read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
+    if not isinstance(manifiesto, dict):
+        return None
+    secciones = (manifiesto.get("bandeja"), manifiesto.get("historico"))
+    if not all(isinstance(s, dict) for s in secciones) or "huella_entrada" not in manifiesto:
+        return None
+    return manifiesto
+
+
+def _consistente(cfg: config.Configuracion, manifiesto: dict | None) -> bool:
     return (
-        previo["huella_entrada"] == entrada
-        and _huella_carpeta(cfg.bandeja) == previo["bandeja"]
-        and {n: hashlib.sha256(r.read_bytes()).hexdigest() for n, r in actuales.items()} == previo["historico"]
+        manifiesto is not None
+        and cfg.bandeja.is_dir()
+        and cfg.historico.is_dir()
+        and _huella_carpeta(cfg.bandeja) == manifiesto["bandeja"]
+        and _hashes_parquet(cfg.historico) == manifiesto["historico"]
     )
 
 
-def _proteger_bandeja_externa(cfg: config.Configuracion) -> None:
-    """La bandeja es un sistema externo: solo se reemplaza la que generó este simulador."""
-    if not cfg.bandeja.is_dir() or not any(cfg.bandeja.iterdir()):
+def _vigente(cfg: config.Configuracion, entrada: str) -> bool:
+    manifiesto = _leer_manifiesto(cfg.historico)
+    return _consistente(cfg, manifiesto) and manifiesto["huella_entrada"] == entrada
+
+
+def _recuperar(cfg: config.Configuracion) -> None:
+    """Deja las salidas en un estado completo tras una ejecución interrumpida."""
+    for destino in (cfg.historico, cfg.bandeja):
+        _eliminar(_nueva(destino))
+
+    respaldos = [r for r in (_respaldo(cfg.historico), _respaldo(cfg.bandeja)) if r.exists()]
+    if not respaldos:
         return
-    ruta = cfg.historico / MANIFIESTO
-    propios = json.loads(ruta.read_text(encoding="utf-8"))["bandeja"] if ruta.is_file() else {}
-    ajenos = sorted(r.name for r in cfg.bandeja.iterdir() if r.name not in propios)
-    if ajenos:
-        raise RuntimeError(f"La bandeja {cfg.bandeja} contiene archivos ajenos; no se modifica: {ajenos[:3]}")
+    if _consistente(cfg, _leer_manifiesto(cfg.historico)):
+        for respaldo in respaldos:
+            _eliminar(respaldo)
+        return
+
+    # La instalación no terminó: se vuelve a la versión anterior si coincide con su manifiesto.
+    origen = _respaldo(cfg.historico) if _respaldo(cfg.historico).exists() else cfg.historico
+    manifiesto = _leer_manifiesto(origen)
+    if manifiesto is None or _hashes_parquet(origen) != manifiesto["historico"]:
+        raise RuntimeError(f"No se puede recuperar {cfg.historico}: respaldo no verificable")
+    respaldo_bandeja = _respaldo(cfg.bandeja)
+    if respaldo_bandeja.exists() and _huella_carpeta(respaldo_bandeja) != manifiesto["bandeja"]:
+        raise RuntimeError(f"No se puede recuperar {cfg.bandeja}: respaldo no verificable")
+    for destino in (cfg.historico, cfg.bandeja):
+        if _respaldo(destino).exists():
+            _eliminar(destino)
+            _respaldo(destino).rename(destino)
 
 
-def _reemplazar(origen: Path, destino: Path) -> None:
-    respaldo = destino.with_name(f".{destino.name}.anterior")
-    if destino.exists():
-        destino.rename(respaldo)
-    shutil.move(origen, destino)
-    if respaldo.exists():
-        shutil.rmtree(respaldo)
+def _ajenos(carpeta: Path, propios: dict[str, str], permitidos: tuple[str, ...] = ()) -> list[str]:
+    ajenos = []
+    for ruta in sorted(carpeta.iterdir()):
+        if ruta.name in permitidos:
+            continue
+        if ruta.is_symlink() or not ruta.is_file():
+            ajenos.append(ruta.name)
+        elif hashlib.sha256(ruta.read_bytes()).hexdigest() != propios.get(ruta.name):
+            ajenos.append(ruta.name)
+    return ajenos
+
+
+def _proteger_salidas(cfg: config.Configuracion) -> None:
+    """Solo se reemplazan archivos idénticos a los del manifiesto. `--forzar` no cambia esta regla."""
+    manifiesto = _leer_manifiesto(cfg.historico)
+    propios = manifiesto or {"bandeja": {}, "historico": {}}
+    for carpeta, seccion, permitidos in (
+        (cfg.bandeja, "bandeja", ()),
+        (cfg.historico, "historico", (MANIFIESTO,) if manifiesto else ()),
+    ):
+        if carpeta.exists() and not carpeta.is_dir():
+            raise RuntimeError(f"{carpeta} no es una carpeta; no se modifica")
+        if not carpeta.is_dir():
+            continue
+        ajenos = _ajenos(carpeta, propios[seccion], permitidos)
+        if ajenos:
+            motivo = "con contenido distinto al del manifiesto" if manifiesto else "sin un manifiesto válido"
+            raise RuntimeError(
+                f"{carpeta} tiene archivos no generados por el simulador ({motivo}); "
+                f"no se modifica. Restáuralos o muévelos: {ajenos[:3]}"
+            )
+
+
+def _instalar(pares: list[tuple[Path, Path]]) -> None:
+    """Instala las carpetas nuevas por renombrado. Ante un fallo, restaura las anteriores."""
+    instaladas = []
+    try:
+        for nueva, destino in pares:
+            instaladas.append(destino)
+            if destino.exists():
+                destino.rename(_respaldo(destino))
+            nueva.rename(destino)
+    except BaseException:
+        for destino in reversed(instaladas):
+            if _respaldo(destino).exists():
+                _eliminar(destino)
+                _respaldo(destino).rename(destino)
+        raise
+    for _, destino in pares:
+        _eliminar(_respaldo(destino))
 
 
 def ejecutar(cfg: config.Configuracion, forzar: bool = False) -> dict:
     """Genera las salidas. Si ya corresponden a la misma entrada, no cambia nada."""
+    cfg.historico.parent.mkdir(parents=True, exist_ok=True)
+    cfg.bandeja.parent.mkdir(parents=True, exist_ok=True)
+    _recuperar(cfg)
+
     tablas, contenido = kaggle.leer(cfg.kaggle)
     entrada = _huella_entrada(contenido, cfg)
     if not forzar and _vigente(cfg, entrada):
-        return json.loads((cfg.historico / MANIFIESTO).read_text(encoding="utf-8"))
+        return _leer_manifiesto(cfg.historico)
 
-    _proteger_bandeja_externa(cfg)
+    _proteger_salidas(cfg)
     fin = cfg.fin_bandeja or date.fromisoformat(tablas["train.csv"]["date"].max())
     if fin <= cfg.corte_historico:
         raise ValueError("El corte histórico debe ser anterior al fin de la bandeja")
@@ -76,12 +171,11 @@ def ejecutar(cfg: config.Configuracion, forzar: bool = False) -> dict:
     entregas = bandeja.construir(tablas, cfg, fin)
     entregas, registro = incidentes.aplicar(entregas, cfg.incidentes, cfg.semilla)
 
-    cfg.historico.parent.mkdir(parents=True, exist_ok=True)
-    cfg.bandeja.parent.mkdir(parents=True, exist_ok=True)
-    with tempfile.TemporaryDirectory(dir=cfg.historico.parent, prefix=".simulacion_") as temporal:
-        previa_historico = Path(temporal) / "historico"
+    # Cada carpeta nueva se prepara junto a su destino para instalarla con un renombrado,
+    # sin copias parciales aunque BANDEJA_DIR esté en otro sistema de archivos.
+    previa_historico, previa_bandeja = _nueva(cfg.historico), _nueva(cfg.bandeja)
+    try:
         filas = historico.generar(tablas, cfg, previa_historico)
-        previa_bandeja = Path(temporal) / "bandeja"
         bandeja.escribir(entregas, previa_bandeja)
 
         archivos_bandeja = _huella_carpeta(previa_bandeja)
@@ -100,8 +194,10 @@ def ejecutar(cfg: config.Configuracion, forzar: bool = False) -> dict:
         (previa_historico / MANIFIESTO).write_text(
             json.dumps(manifiesto, indent=2, sort_keys=True, ensure_ascii=False), encoding="utf-8"
         )
-        _reemplazar(previa_bandeja, cfg.bandeja)
-        _reemplazar(previa_historico, cfg.historico)
+        _instalar([(previa_historico, cfg.historico), (previa_bandeja, cfg.bandeja)])
+    finally:
+        _eliminar(previa_historico)
+        _eliminar(previa_bandeja)
     return manifiesto
 
 
