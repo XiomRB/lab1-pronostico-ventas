@@ -29,7 +29,8 @@ La especificación es `docs/diseno_tecnico_lab1.md` y el enunciado es `docs/inst
 
 ## Entorno
 
-- Python 3.12 en `.venv`. Instala con `make instalar` y prueba con `make test`.
+- Python 3.12 en `.venv`. Instala con `make install` y prueba con `make test`.
+- Los objetivos de `make` se nombran en inglés.
 - Las versiones siguen las constraints de Airflow 3.3.2. Si cambias una, documéntalo en `DECISIONES.md`.
 - Airflow solo es accesible desde localhost.
 - Las pruebas no dependen de los datos de Kaggle: usan datos sintéticos.
