@@ -5,6 +5,9 @@ rutas:
   bandeja: data/bandeja        # BANDEJA_DIR tiene prioridad sobre este valor
   almacen: data/almacen
   cuarentena: data/cuarentena
+  procesado: data/procesado
+  modelos: models
+  reportes: reportes
 
 corte_historico: "2017-03-31"  # última fecha de negocio de la carga histórica
 fin_bandeja: null              # null usa la última fecha de ventas de Kaggle
