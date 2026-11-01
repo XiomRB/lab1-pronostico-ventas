@@ -124,6 +124,18 @@ def test_reproceso_idempotente(cfg):
     assert publicar.publicar(cfg, CORTE, reprocesar_en=CORTE)["resultado"] == "sin_cambios"
 
 
+def test_datos_nuevos_sin_efecto_no_crean_revision(cfg):
+    publicar.publicar(cfg, CORTE)
+    from pronostico_ventas.ingesta.proceso import ingerir
+
+    (cfg.bandeja / "ventas_2017-03-12__entrega_2017-03-13.csv").write_text(
+        "date,store_nbr,family,sales,onpromotion\n2017-03-12,1,GROCERY I,1.0,0\n"
+    )
+    ingerir(cfg, date(2017, 3, 17))
+    assert publicar.publicar(cfg, CORTE, reprocesar_en=date(2017, 3, 17))["resultado"] == "sin_cambios"
+    assert publicar.revisiones(cfg, CORTE) == [1]
+
+
 def test_publicacion_omitida_con_motivo(cfg):
     resultado = publicar.publicar(cfg, date(2017, 3, 27))
     assert resultado["resultado"] == "omitida"

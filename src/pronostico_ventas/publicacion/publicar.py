@@ -95,6 +95,11 @@ def _canonico(tabla: pd.DataFrame) -> str:
     return _hash_texto(tabla.assign(**{c: tabla[c].round(6) for c in decimales}).to_csv(index=False, lineterminator="\n"))
 
 
+def canonico_igual(pronostico: pd.DataFrame, pedido: pd.DataFrame, previo: dict[str, Any]) -> bool:
+    """Una revisión solo tiene sentido si cambia lo publicado."""
+    return _canonico(pronostico) == previo["hash_pronostico"] and _canonico(pedido) == previo["hash_pedido"]
+
+
 def _escribir_publicacion(destino: Path, pronostico: pd.DataFrame, pedido: pd.DataFrame, manifiesto: dict[str, Any]) -> None:
     temporal = destino.with_name(f".{destino.name}.tmp")
     temporal.mkdir(parents=True, exist_ok=True)
@@ -134,6 +139,9 @@ def publicar(cfg: Configuracion, corte: date, reprocesar_en: date | None = None)
 
     modelo, calibrador, meta = entrenamiento.cargar(cfg, identificador)
     pronostico, pedido = calcular(cfg, corte, modelo, calibrador, None if reprocesar_en is None else conocido)
+    if previo and canonico_igual(pronostico, pedido, previo):
+        return {"resultado": "sin_cambios", "corte": corte.isoformat(), "revision": revisa}
+
     commit, limpio = commit_actual(cfg)
     manifiesto = {
         "commit": commit,
