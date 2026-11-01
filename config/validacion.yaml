@@ -1,0 +1,47 @@
+# Reglas de validación por fuente. Un error detiene el archivo; una advertencia no.
+tipos_feriado: [Additional, Bridge, Event, Holiday, Transfer, Work Day]
+locales_feriado: [Local, National, Regional]
+cuantil_extremo: 0.999          # ventas sobre este cuantil histórico generan advertencia
+maximo_atraso_dias: 7           # atraso a partir del cual una fuente queda crítica
+
+fuentes:
+  ventas:
+    requeridas: [date, store_nbr, family, sales, onpromotion]
+    opcionales: [id]
+    enteras: [store_nbr, onpromotion]
+    decimales: [sales]
+    no_negativas: [store_nbr, onpromotion, sales]
+    clave: [date, store_nbr, family]
+    fecha: nombre
+    entrega_posterior: true
+  transacciones:
+    requeridas: [date, store_nbr, transactions]
+    enteras: [store_nbr, transactions]
+    no_negativas: [store_nbr, transactions]
+    clave: [date, store_nbr]
+    fecha: nombre
+    entrega_posterior: true
+  promociones:
+    requeridas: [date, store_nbr, family, onpromotion]
+    enteras: [store_nbr, onpromotion]
+    no_negativas: [store_nbr, onpromotion]
+    clave: [date, store_nbr, family]
+    fecha: posterior
+  petroleo:
+    requeridas: [date, dcoilwtico]
+    decimales: [dcoilwtico]
+    admite_nulos: [dcoilwtico]
+    no_negativas: [dcoilwtico]
+    clave: [date]
+    fecha: nombre
+    entrega_posterior: true
+  feriados:
+    requeridas: [date, type, locale, locale_name, description, transferred]
+    clave: [date, locale, locale_name, description]
+    fecha: nombre
+  tiendas:
+    requeridas: [store_nbr, city, state, type, cluster]
+    enteras: [store_nbr, cluster]
+    no_negativas: [store_nbr, cluster]
+    clave: [store_nbr]
+    fecha: ninguna
