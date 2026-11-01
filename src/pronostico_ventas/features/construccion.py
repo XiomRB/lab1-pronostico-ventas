@@ -70,12 +70,17 @@ def _calendario(cfg: Configuracion, corte: date, fechas: pd.DatetimeIndex, tiend
     return pd.concat(filas, ignore_index=True)
 
 
-def construir(cfg: Configuracion, corte: date) -> pd.DataFrame:
-    """Construye el panel de `corte`. Toda fuente se lee con as_of, nunca directamente."""
+def construir(cfg: Configuracion, corte: date, conocido: date | None = None) -> pd.DataFrame:
+    """Construye el panel de `corte`. Toda fuente se lee con as_of, nunca directamente.
+
+    Con `conocido` usa las correcciones sabidas en esa fecha, para reprocesar un corte pasado.
+    """
+    visto = conocido or corte
     horizonte = cfg.modelo["horizonte_dias"]
     desde = corte - timedelta(days=DIAS_HISTORIA)
-    ventas = as_of(cfg, "ventas", corte, columnas=["date", "store_nbr", "family", "sales", "onpromotion"], desde=desde)
-    tiendas = as_of(cfg, "tiendas", corte, columnas=["store_nbr", "city", "state", "type", "cluster"])
+    ventas = as_of(cfg, "ventas", visto, columnas=["date", "store_nbr", "family", "sales", "onpromotion"], desde=desde)
+    ventas = ventas[ventas["date"] < pd.Timestamp(corte)]
+    tiendas = as_of(cfg, "tiendas", visto, columnas=["store_nbr", "city", "state", "type", "cluster"])
     familias = sorted(series_esperadas(cfg)["family"].unique())
     codigos = {familia: indice for indice, familia in enumerate(familias)}
 
@@ -97,19 +102,21 @@ def construir(cfg: Configuracion, corte: date) -> pd.DataFrame:
     panel["fecha_anterior"] = panel["date"] - pd.Timedelta(days=364)
     panel = panel.merge(anterior, how="left", on=["fecha_anterior", "store_nbr", "family"]).drop(columns="fecha_anterior")
 
-    plan = as_of(cfg, "promociones", corte, columnas=["date", "store_nbr", "family", "onpromotion"], desde=corte + timedelta(days=1))
+    plan = as_of(cfg, "promociones", visto, columnas=["date", "store_nbr", "family", "onpromotion"], desde=corte + timedelta(days=1))
     panel = panel.merge(plan.rename(columns={"onpromotion": "promociones"}), how="left", on=["date", "store_nbr", "family"])
 
     panel = panel.merge(tiendas[["store_nbr", "cluster", "type"]], how="left", on="store_nbr")
     panel["tipo_tienda"] = panel.pop("type").map(lambda t: ord(t) - 65 if isinstance(t, str) else np.nan)
-    panel = panel.merge(_calendario(cfg, corte, fechas, tiendas), how="left", on=["store_nbr", "date"])
+    panel = panel.merge(_calendario(cfg, visto, fechas, tiendas), how="left", on=["store_nbr", "date"])
     for columna in ("feriado", "evento", "dia_laboral_extra"):
         panel[columna] = panel[columna].astype(float)
 
-    petroleo = as_of(cfg, "petroleo", corte, columnas=["date", "dcoilwtico"], desde=corte - timedelta(days=60)).dropna()
+    petroleo = as_of(cfg, "petroleo", visto, columnas=["date", "dcoilwtico"], desde=corte - timedelta(days=60)).dropna()
+    petroleo = petroleo[petroleo["date"] < pd.Timestamp(corte)]
     panel["petroleo"] = petroleo["dcoilwtico"].iloc[-1] if len(petroleo) else np.nan
     panel["petroleo_cambio_28"] = petroleo["dcoilwtico"].iloc[-1] - petroleo["dcoilwtico"].iloc[0] if len(petroleo) else np.nan
-    transacciones = as_of(cfg, "transacciones", corte, columnas=["date", "store_nbr", "transactions"], desde=corte - timedelta(days=28))
+    transacciones = as_of(cfg, "transacciones", visto, columnas=["date", "store_nbr", "transactions"], desde=corte - timedelta(days=28))
+    transacciones = transacciones[transacciones["date"] < pd.Timestamp(corte)]
     panel = panel.merge(
         transacciones.groupby("store_nbr")["transactions"].mean().rename("transacciones_media_28").reset_index(),
         how="left", on="store_nbr",
