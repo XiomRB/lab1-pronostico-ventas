@@ -50,20 +50,26 @@ El contrato de la bandeja está en [docs/contrato_bandeja.md](docs/contrato_band
 make ingest FECHA=2017-04-10
 ```
 
-Procesa los archivos de la bandeja ya entregados en esa fecha lógica, sin modificar la bandeja. La fecha de entrega sale del nombre del archivo, nunca del reloj del sistema, por lo que repetir la ejecución o procesar periodos pasados da el mismo resultado.
+Procesa los archivos de la bandeja ya entregados en esa fecha lógica, sin modificar la bandeja. La fecha de entrega sale del nombre del archivo, nunca del reloj del sistema. Procesar día a día o de una vez da el mismo resultado, y repetir una ejecución no cambia nada.
 
 | Situación | Resultado |
 |---|---|
-| Archivo válido | Se guarda en `data/almacen/` como una entrega nueva |
-| Archivo inválido | Va a `data/cuarentena/` con su motivo y no llega al almacén |
-| Reentrega idéntica | Se registra como duplicado |
+| Archivo válido | Se guarda en `data/almacen/` como una observación nueva |
+| Archivo inválido | Va a `data/cuarentena/` con su motivo; las demás entregas continúan |
+| Reentrega idéntica a la versión vigente | Se registra como duplicado |
+| Corrección, también si vuelve a un contenido anterior | Se conservan todas las observaciones y queda vigente la última |
 | Archivo tardío o fuente sin llegar | No es un error; el dato no existe hasta que se entrega |
-| Archivo parcial, valor extremo o tienda nueva | Se acepta con una advertencia |
-| Corrección | Se conserva la versión anterior y se añade la nueva |
+| Archivo descubierto después de una ejecución que cubría su entrega | Se conserva su entrega original, pero solo se conoce desde su primera observación |
+| Series faltantes, valor extremo o tienda nueva | Se acepta con una advertencia |
+| Clave vacía o con formato no admitido | Va a cuarentena y no crea series nuevas |
 
-Cada archivo procesado deja su estado, hash y motivos en `data/almacen/registro/`. Las reglas de validación están en `config/validacion.yaml`.
+Cada observación deja en `data/almacen/registro/` su secuencia, hash, estado, motivos, `fecha_entrega` y `conocido_desde`. Si dos versiones se conocen en la misma fecha, gana la de mayor secuencia. Las reglas de validación están en `config/validacion.yaml`.
 
 `almacen.consulta.as_of(cfg, fuente, corte)` devuelve la última versión de cada registro conocida en una fecha de corte. Toda predicción debe construirse con esa consulta. Un dato ausente nunca se reemplaza por 0.
+
+Cada ingesta informa además avisos de completitud según la frecuencia de cada fuente: ventas por series esperadas, transacciones de tiendas con ventas, y petróleo en días hábiles.
+
+Las limitaciones conocidas están en [docs/deuda_tecnica.md](docs/deuda_tecnica.md).
 
 ## Versiones
 

@@ -18,7 +18,7 @@ VENTAS = (
 REFERENCIA = Referencia(
     familias=frozenset({"GROCERY I", "MEATS"}),
     tiendas=frozenset({1}),
-    filas_por_dia=2,
+    series=frozenset({(1, "GROCERY I"), (1, "MEATS")}),
     umbrales_venta={"GROCERY I": 100.0, "MEATS": 100.0},
 )
 
@@ -89,20 +89,21 @@ def test_extremo_legitimo_solo_advierte():
 
 
 def test_archivo_parcial_solo_advierte():
-    resultado = ventas(VENTAS, referencia=Referencia(filas_por_dia=1782))
+    series = frozenset({(1, "GROCERY I"), (1, "MEATS"), (2, "MEATS")})
+    resultado = ventas(VENTAS, referencia=Referencia(series=series))
     assert resultado.errores == []
-    assert resultado.advertencias == ["archivo_parcial:2_de_1782"]
+    assert resultado.advertencias == ["archivo_parcial:2_de_3"]
 
 
 def test_tienda_y_familia_nuevas_solo_advierten():
     texto = VENTAS.replace(",1,GROCERY I", ",9,NUEVA")
     resultado = ventas(texto)
     assert resultado.errores == []
-    assert set(resultado.advertencias) == {"familia_desconocida", "tienda_desconocida"}
+    assert set(resultado.advertencias) == {"archivo_parcial:1_de_2", "series_no_esperadas:1", "familia_desconocida", "tienda_desconocida"}
 
 
 def test_tienda_sin_ventas_no_advierte():
-    assert ventas(VENTAS.replace(",1,GROCERY I,10.5", ",9,GROCERY I,0.0")).advertencias == []
+    assert "tienda_desconocida" not in ventas(VENTAS.replace(",1,GROCERY I,10.5", ",9,GROCERY I,0.0")).advertencias
 
 
 def test_petroleo_admite_nulo_y_rechaza_texto():

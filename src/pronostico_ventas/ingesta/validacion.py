@@ -24,7 +24,7 @@ class Referencia:
 
     familias: frozenset[str] = frozenset()
     tiendas: frozenset[int] = frozenset()
-    filas_por_dia: int = 0
+    series: frozenset[tuple[int, str]] = frozenset()
     umbrales_venta: dict[str, float] = field(default_factory=dict)
 
 
@@ -47,7 +47,12 @@ def _validar_fechas(tabla: pd.DataFrame, regla: str, fecha: date, errores: list[
 
 def _validar_numeros(tabla: pd.DataFrame, reglas: dict[str, Any], errores: list[str]) -> None:
     nulos = set(reglas.get("admite_nulos", []))
+    for columna in reglas.get("identificadores", []):
+        if columna in tabla and not tabla[columna].str.fullmatch(r"\d+").all():
+            errores.append(f"formato_invalido:{columna}")
     for columna in reglas.get("enteras", []) + reglas.get("decimales", []):
+        if columna not in tabla:
+            continue
         numeros = _numeros(tabla[columna])
         invalidos = numeros.isna()
         if columna in nulos:
@@ -57,8 +62,20 @@ def _validar_numeros(tabla: pd.DataFrame, reglas: dict[str, Any], errores: list[
         elif columna in reglas.get("enteras", []) and (numeros.dropna() % 1 != 0).any():
             errores.append(f"valor_no_entero:{columna}")
     for columna in reglas.get("no_negativas", []):
-        if (_numeros(tabla[columna]) < 0).any():
+        if columna in tabla and (_numeros(tabla[columna]) < 0).any():
             errores.append(f"valor_negativo:{columna}")
+
+
+def _validar_textos(tabla: pd.DataFrame, reglas: dict[str, Any], errores: list[str]) -> None:
+    for columna in reglas.get("textos", []):
+        valores = tabla[columna]
+        if (valores == "").any():
+            errores.append(f"texto_vacio:{columna}")
+        elif (valores != valores.str.strip()).any():
+            errores.append(f"espacios_sobrantes:{columna}")
+    for columna, patron in reglas.get("formatos", {}).items():
+        if not tabla[columna].str.fullmatch(patron).all():
+            errores.append(f"formato_invalido:{columna}")
 
 
 def _validar_categorias(fuente: str, tabla: pd.DataFrame, cfg: dict[str, Any], errores: list[str]) -> None:
@@ -74,8 +91,12 @@ def _validar_categorias(fuente: str, tabla: pd.DataFrame, cfg: dict[str, Any], e
 
 def _advertir_ventas(tabla: pd.DataFrame, referencia: Referencia, advertencias: list[str]) -> None:
     ventas = _numeros(tabla["sales"])
-    if referencia.filas_por_dia and len(tabla) < referencia.filas_por_dia:
-        advertencias.append(f"archivo_parcial:{len(tabla)}_de_{referencia.filas_por_dia}")
+    if referencia.series:
+        presentes = set(zip(_numeros(tabla["store_nbr"]).astype(int), tabla["family"]))
+        if not referencia.series <= presentes:
+            advertencias.append(f"archivo_parcial:{len(referencia.series & presentes)}_de_{len(referencia.series)}")
+        if presentes - referencia.series:
+            advertencias.append(f"series_no_esperadas:{len(presentes - referencia.series)}")
     umbrales = tabla["family"].map(referencia.umbrales_venta)
     if (ventas > umbrales).any():
         advertencias.append(f"valor_extremo:{int((ventas > umbrales).sum())}")
@@ -113,6 +134,7 @@ def validar(fuente: str, fecha: date, entrega: date, contenido: bytes, cfg: dict
         resultado.errores.append("entrega_anterior_a_la_fecha")
     _validar_fechas(tabla, reglas["fecha"], fecha, resultado.errores)
     _validar_numeros(tabla, reglas, resultado.errores)
+    _validar_textos(tabla, reglas, resultado.errores)
     _validar_categorias(fuente, tabla, cfg, resultado.errores)
 
     filas = len(tabla)
