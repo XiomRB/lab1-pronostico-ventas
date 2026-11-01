@@ -89,7 +89,7 @@ def calcular(cfg: Configuracion, corte: date, modelo: Any, calibrador: residuos.
     return pronostico.sort_values(["date", *orden], ignore_index=True), pedido.sort_values(orden, ignore_index=True)
 
 
-def _canonico(tabla: pd.DataFrame) -> str:
+def canonico(tabla: pd.DataFrame) -> str:
     """Hash estable: valores redondeados y orden fijo, sin metadatos del archivo."""
     decimales = tabla.select_dtypes("number").columns
     return _hash_texto(tabla.assign(**{c: tabla[c].round(6) for c in decimales}).to_csv(index=False, lineterminator="\n"))
@@ -155,8 +155,8 @@ def publicar(cfg: Configuracion, corte: date, reprocesar_en: date | None = None)
         "cobertura": cfg.modelo["cobertura"],
         "revision": revision,
         "revisa_a": revisa,
-        "hash_pronostico": _canonico(pronostico),
-        "hash_pedido": _canonico(pedido),
+        "hash_pronostico": canonico(pronostico),
+        "hash_pedido": canonico(pedido),
     }
     destino = carpeta(cfg, corte, revision)
     destino.parent.mkdir(parents=True, exist_ok=True)
