@@ -19,7 +19,7 @@ ENTEROS = {"id", "store_nbr", "onpromotion", "transactions", "cluster"}
 DECIMALES = {"sales", "dcoilwtico"}
 
 
-def _tipar(tabla: pd.DataFrame) -> pd.DataFrame:
+def tipar(tabla: pd.DataFrame) -> pd.DataFrame:
     tipada = tabla.copy()
     for columna in tipada.columns:
         if columna in ENTEROS:
@@ -39,7 +39,7 @@ def _con_entrega(tabla: pd.DataFrame, regla) -> pd.DataFrame:
 
 
 def _guardar(tabla: pd.DataFrame, destino: Path, claves: list[str]) -> int:
-    ordenada = _tipar(tabla).sort_values(claves, kind="stable")
+    ordenada = tipar(tabla).sort_values(claves, kind="stable")
     ordenada.to_parquet(destino, index=False, compression="zstd")
     return len(ordenada)
 

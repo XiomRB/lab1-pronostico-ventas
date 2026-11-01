@@ -17,6 +17,7 @@ OBLIGATORIOS = [
     "config/fuentes.yaml",
     "config/modelo.yaml",
     "config/simulacion.yaml",
+    "config/validacion.yaml",
     "docs/contrato_bandeja.md",
     "pyproject.toml",
     "requirements-dev.txt",

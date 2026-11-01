@@ -22,7 +22,8 @@ def _huella_total(archivos: dict[str, str]) -> str:
 
 
 def _huella_entrada(contenido: str, cfg: config.Configuracion) -> str:
-    parametros = {k: v for k, v in asdict(cfg).items() if k not in ("raiz", "kaggle", "historico", "bandeja")}
+    excluidas = ("raiz", "kaggle", "historico", "bandeja", "almacen", "cuarentena", "validacion")
+    parametros = {k: v for k, v in asdict(cfg).items() if k not in excluidas}
     texto = json.dumps(parametros, sort_keys=True, default=str)
     return hashlib.sha256(f"{contenido}{texto}".encode()).hexdigest()
 
