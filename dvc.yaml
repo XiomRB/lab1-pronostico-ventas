@@ -1,0 +1,15 @@
+stages:
+  comparar_modelos:
+    cmd: make evaluate
+    deps:
+      - config/costos.yaml
+      - config/modelo.yaml
+      - data/historico
+      - src/pronostico_ventas/calibracion
+      - src/pronostico_ventas/evaluacion
+      - src/pronostico_ventas/features
+      - src/pronostico_ventas/modelos
+      - src/pronostico_ventas/pedido
+    metrics:
+      - reportes/comparacion_modelos.json:
+          cache: false
