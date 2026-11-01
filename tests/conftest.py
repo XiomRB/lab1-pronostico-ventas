@@ -103,3 +103,32 @@ def proyecto_ingesta(proyecto_sintetico):
 
     ejecutar(config.cargar(proyecto_sintetico))
     return proyecto_sintetico
+
+
+@pytest.fixture
+def proyecto_modelo(proyecto_sintetico):
+    """Proyecto sintético con cortes cortos, para probar el modelado completo en segundos."""
+    from pronostico_ventas import config
+    from pronostico_ventas.ingesta.proceso import ingerir
+    from pronostico_ventas.simulador.__main__ import ejecutar
+    from datetime import date
+
+    ruta = proyecto_sintetico / "config" / "simulacion.yaml"
+    simulacion = yaml.safe_load(ruta.read_text(encoding="utf-8"))
+    simulacion.update({"corte_historico": "2017-03-13", "incidentes": {}})
+    ruta.write_text(yaml.safe_dump(simulacion), encoding="utf-8")
+    ruta = proyecto_sintetico / "config" / "modelo.yaml"
+    modelo = yaml.safe_load(ruta.read_text(encoding="utf-8"))
+    modelo.update({
+        "horizonte_dias": 7, "cobertura": {"desde_dia": 2, "hasta_dia": 5}, "minimo_residuos_grupo": 5,
+        "validacion": {"ultimo_corte": "2017-03-06", "cortes": 2, "paso_semanas": 1, "cortes_calibracion": 2},
+        "entrenamiento": {"primer_corte": "2017-01-09", "paso_semanas": 1},
+    })
+    modelo["candidatos"]["lightgbm"]["parametros"].update({"n_estimators": 5, "min_child_samples": 5})
+    modelo["candidatos"]["lightgbm_poisson"]["parametros"].update({"n_estimators": 5, "min_child_samples": 5})
+    modelo["candidatos"]["hgb_poisson"]["parametros"].update({"max_iter": 5, "min_samples_leaf": 5})
+    ruta.write_text(yaml.safe_dump(modelo), encoding="utf-8")
+    cfg = config.cargar(proyecto_sintetico)
+    ejecutar(cfg)
+    ingerir(cfg, date(2017, 3, 16))
+    return proyecto_sintetico
