@@ -70,10 +70,13 @@ def commit_publicacion(cfg: Configuracion, etiqueta: str) -> str:
 def versionar(cfg: Configuracion, corte: date, revision: int) -> None:
     """Registra publicación, almacén, procesados y modelos en DVC, y crea el commit de publicación."""
     destino = carpeta(cfg, corte, revision)
-    objetivos = [destino, cfg.almacen, cfg.procesado, cfg.modelos]
+    objetivos = [cfg.kaggle, cfg.historico, destino, cfg.almacen, cfg.cuarentena, cfg.procesado, cfg.seguimiento, cfg.modelos]
+    if not os.environ.get("BANDEJA_HOST"):
+        objetivos.append(cfg.bandeja)
     relativas = [str(p.relative_to(cfg.raiz)) for p in objetivos if p.exists()]
     try:
-        _exigir(_dvc(cfg, "add", *relativas), "dvc add")
+        # Sin reenlazar: la bandeja se monta en solo lectura y sus archivos no deben reemplazarse.
+        _exigir(_dvc(cfg, "add", "--no-relink", *relativas), "dvc add")
         commit_publicacion(cfg, f"pub/{corte.isoformat()}-r{revision}")
     except ErrorRespaldo as error:
         estado.marcar(cfg, corte, revision, "RESPALDO_FALLIDO", str(error), "versionar")
