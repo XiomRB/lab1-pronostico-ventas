@@ -46,7 +46,7 @@ def particiones(cfg: Configuracion) -> list[Particion]:
     return resultado
 
 
-def _con_objetivo(cfg: Configuracion, cortes: list[date], conocido: date) -> pd.DataFrame:
+def con_objetivo(cfg: Configuracion, cortes: list[date], conocido: date) -> pd.DataFrame:
     paneles = pd.concat([obtener(cfg, c) for c in cortes], ignore_index=True)
     reales = objetivos(cfg, conocido, cortes[0], max(cortes) + timedelta(days=cfg.modelo["horizonte_dias"]))
     unido = paneles.merge(reales.rename(columns={"sales": "y"}), how="left", on=CLAVES)
@@ -56,17 +56,17 @@ def _con_objetivo(cfg: Configuracion, cortes: list[date], conocido: date) -> pd.
 def preparar(modelo: Any, cfg: Configuracion, particion: Particion) -> residuos.Calibrador:
     """Entrena con cortes previos y calibra con cortes posteriores al entrenamiento."""
     inicio_calibracion = particion.calibracion[0]
-    entrenar = _con_objetivo(cfg, particion.entrenamiento, inicio_calibracion).dropna(subset=["y"])
+    entrenar = con_objetivo(cfg, particion.entrenamiento, inicio_calibracion).dropna(subset=["y"])
     modelo.ajustar(entrenar, entrenar["y"].to_numpy("float64"))
     del entrenar
-    calibrar = _con_objetivo(cfg, particion.calibracion, particion.prueba)
+    calibrar = con_objetivo(cfg, particion.calibracion, particion.prueba)
     calibrar["p"] = modelo.predecir(calibrar)
     return residuos.ajustar(calibrar, cfg.modelo)
 
 
 def medir_corte(modelo: Any, calibrador: residuos.Calibrador, cfg: Configuracion, prueba: date) -> dict[str, Any]:
     horizonte, cobertura = cfg.modelo["horizonte_dias"], cfg.modelo["cobertura"]
-    datos = _con_objetivo(cfg, [prueba], prueba + timedelta(days=horizonte + 1)).dropna(subset=["y"])
+    datos = con_objetivo(cfg, [prueba], prueba + timedelta(days=horizonte + 1)).dropna(subset=["y"])
     datos["p"] = modelo.predecir(datos)
     y, p = datos["y"].to_numpy("float64"), datos["p"].to_numpy()
     cuantiles = {n: calibrador.cuantil_diario(datos, n) for n in cfg.modelo["niveles_cuantil"]}

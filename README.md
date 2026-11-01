@@ -84,6 +84,16 @@ Las features de cada corte se construyen solo con `as_of`. Los cuantiles salen d
 
 El resultado está en [docs/evidencia/modelos/comparacion.md](docs/evidencia/modelos/comparacion.md).
 
+## Publicación
+
+`python -m pronostico_ventas.publicacion --corte AAAA-MM-DD` publica el pronóstico diario con P10, P50 y P90, y el pedido sugerido en `data/publicado/corte=.../rev=N/`, junto a un manifiesto con el commit, los hashes de datos, modelo y configuración, el corte, el horizonte y la revisión.
+
+Una publicación no se modifica. Con `--reprocesar-en` se crea una revisión nueva con los datos corregidos conocidos en esa fecha y el modelo de la publicación original. Si los datos de ventas están demasiado atrasados, la publicación se omite y queda registrado el motivo.
+
+Sin datos de inventario, el pedido representa la necesidad bruta del periodo. Las series sin ventas en 28 días y las tiendas sin ventas en 7 días reciben pedido 0 con una marca.
+
+Una publicación solo queda `RESPALDADA` si el remoto es un montaje real, existe su centinela, `dvc push` termina bien, `dvc status -c --json` devuelve `{}` y los hashes de sus objetos coinciden. El estado de cada publicación está en `data/estado_publicaciones/`.
+
 ## Versiones
 
 | Paquete | Versión | Origen |
