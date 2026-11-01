@@ -250,3 +250,59 @@ def test_respaldo_pendiente_se_reconcilia(repo, monkeypatch):
     assert versionado.reconciliar(cfg) == ["2017-03-06-r1"]
     assert estado.leer(cfg, CORTE, 1)["estado"] == "RESPALDADA"
     assert versionado.reconciliar(cfg) == []
+
+
+def test_reproducir_hash_identico(cfg):
+    from pronostico_ventas.publicacion.reproduccion import reproducir
+
+    publicar.publicar(cfg, CORTE)
+    assert reproducir(cfg, CORTE, 1)["identico"]
+
+
+def test_reproducir_no_cambia_por_datos_posteriores(cfg):
+    from pronostico_ventas.ingesta.proceso import ingerir
+    from pronostico_ventas.publicacion.reproduccion import reproducir
+
+    publicar.publicar(cfg, CORTE)
+    (cfg.bandeja / "ventas_2017-03-05__entrega_2017-03-07.csv").write_text(
+        "date,store_nbr,family,sales,onpromotion\n2017-03-05,1,GROCERY I,9999.0,0\n"
+    )
+    ingerir(cfg, date(2017, 3, 20))
+    assert reproducir(cfg, CORTE, 1)["identico"]
+
+
+def test_reproducir_detecta_otro_modelo(cfg):
+    from pronostico_ventas.publicacion.reproduccion import reproducir
+
+    publicar.publicar(cfg, CORTE)
+    ruta = cfg.modelos / entrenamiento.leer_vigente(cfg) / "meta.json"
+    meta = json.loads(ruta.read_text(encoding="utf-8"))
+    meta["hash_modelo"] = "otro"
+    ruta.write_text(json.dumps(meta), encoding="utf-8")
+    with pytest.raises(ValueError):
+        reproducir(cfg, CORTE, 1)
+
+
+def test_tar_alterado_se_rechaza(tmp_path, raiz):
+    remoto = tmp_path / "origen" / "lab1"
+    remoto.mkdir(parents=True)
+    (remoto / "objeto").write_text("datos")
+    subprocess.run([raiz / "scripts/respaldar_dvc.sh", tmp_path / "copia", remoto], check=True, capture_output=True)
+    archivo = next((tmp_path / "copia").glob("*.tar"))
+    with open(archivo, "ab") as contenido:
+        contenido.write(b"x")
+    r = subprocess.run([raiz / "scripts/restaurar_dvc.sh", archivo, tmp_path / "destino"], capture_output=True)
+    assert r.returncode != 0
+    assert not (tmp_path / "destino" / "lab1").exists()
+
+
+def test_restauracion_desde_tar(tmp_path, raiz):
+    remoto = tmp_path / "origen" / "lab1"
+    remoto.mkdir(parents=True)
+    (remoto / "objeto").write_text("datos")
+    subprocess.run([raiz / "scripts/respaldar_dvc.sh", tmp_path / "copia", remoto], check=True, capture_output=True)
+    archivo = next((tmp_path / "copia").glob("*.tar"))
+    subprocess.run([raiz / "scripts/restaurar_dvc.sh", archivo, tmp_path / "destino"], check=True, capture_output=True)
+    assert (tmp_path / "destino" / "lab1" / "objeto").read_text() == "datos"
+    r = subprocess.run([raiz / "scripts/restaurar_dvc.sh", archivo, tmp_path / "destino"], capture_output=True)
+    assert r.returncode != 0

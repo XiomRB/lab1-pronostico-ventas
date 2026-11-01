@@ -9,7 +9,7 @@ EN_IMAGEN := docker run --rm -u $$(id -u):0 -e PYTHONPATH=/opt/lab1/src -e OMP_N
 
 COMPOSE := docker compose --env-file .env -f airflow/docker-compose.yaml
 
-.PHONY: install test prepare-remote verify-remote simulate ingest image evaluate setup up down
+.PHONY: install test prepare-remote verify-remote simulate ingest image evaluate setup up down backup-dvc restore-dvc
 
 install:
 	$(PYTHON) -m venv $(VENV)
@@ -42,6 +42,12 @@ up: setup
 
 down:
 	$(COMPOSE) down
+
+backup-dvc:
+	./scripts/respaldar_dvc.sh $(DESTINO)
+
+restore-dvc:
+	./scripts/restaurar_dvc.sh $(ARCHIVO)
 
 prepare-remote:
 	mkdir -p $(REMOTO)
