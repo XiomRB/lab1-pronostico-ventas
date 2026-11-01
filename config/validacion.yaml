@@ -3,14 +3,20 @@ tipos_feriado: [Additional, Bridge, Event, Holiday, Transfer, Work Day]
 locales_feriado: [Local, National, Regional]
 cuantil_extremo: 0.999          # ventas sobre este cuantil histórico generan advertencia
 maximo_atraso_dias: 7           # atraso a partir del cual una fuente queda crítica
+dias_revision_completitud: 14   # días recientes revisados en cada ingesta
+dias_sin_operacion: ["12-25"]    # mes-día sin ventas esperadas
 
 fuentes:
   ventas:
     requeridas: [date, store_nbr, family, sales, onpromotion]
     opcionales: [id]
-    enteras: [store_nbr, onpromotion]
+    enteras: [id, store_nbr, onpromotion]
     decimales: [sales]
-    no_negativas: [store_nbr, onpromotion, sales]
+    no_negativas: [id, store_nbr, onpromotion, sales]
+    identificadores: [id, store_nbr]
+    textos: [family]
+    formatos:
+      family: '^[A-Z0-9][A-Z0-9 /,&.-]*[A-Z0-9]$'
     clave: [date, store_nbr, family]
     fecha: nombre
     entrega_posterior: true
@@ -18,6 +24,7 @@ fuentes:
     requeridas: [date, store_nbr, transactions]
     enteras: [store_nbr, transactions]
     no_negativas: [store_nbr, transactions]
+    identificadores: [store_nbr]
     clave: [date, store_nbr]
     fecha: nombre
     entrega_posterior: true
@@ -25,6 +32,10 @@ fuentes:
     requeridas: [date, store_nbr, family, onpromotion]
     enteras: [store_nbr, onpromotion]
     no_negativas: [store_nbr, onpromotion]
+    identificadores: [store_nbr]
+    textos: [family]
+    formatos:
+      family: '^[A-Z0-9][A-Z0-9 /,&.-]*[A-Z0-9]$'
     clave: [date, store_nbr, family]
     fecha: posterior
   petroleo:
@@ -37,11 +48,14 @@ fuentes:
     entrega_posterior: true
   feriados:
     requeridas: [date, type, locale, locale_name, description, transferred]
+    textos: [locale_name, description]
     clave: [date, locale, locale_name, description]
     fecha: nombre
   tiendas:
     requeridas: [store_nbr, city, state, type, cluster]
     enteras: [store_nbr, cluster]
     no_negativas: [store_nbr, cluster]
+    identificadores: [store_nbr, cluster]
+    textos: [city, state, type]
     clave: [store_nbr]
     fecha: ninguna
