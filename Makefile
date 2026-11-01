@@ -34,8 +34,11 @@ evaluate:
 setup:
 	./scripts/preparar_entorno.sh
 
+# El simulador termina antes de crear los servicios que montan la bandeja.
 up: setup
-	$(COMPOSE) up -d --build
+	$(COMPOSE) build
+	$(COMPOSE) run --rm simulador
+	$(COMPOSE) up -d
 
 down:
 	$(COMPOSE) down
