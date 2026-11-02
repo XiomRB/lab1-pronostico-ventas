@@ -50,3 +50,9 @@ def test_revisiones_son_una_rama_final():
     contenido = (CARPETA / "operacion_diaria.py").read_text(encoding="utf-8")
     assert "ingesta >> revisiones\n" in contenido
     assert "revisiones >> corte" not in contenido
+
+
+def test_bandeja_externa_conserva_la_carga_historica():
+    compose = (CARPETA.parent / "airflow" / "docker-compose.yaml").read_text(encoding="utf-8")
+    assert "--solo-historico" in compose
+    assert "data/bandeja:ro" in compose

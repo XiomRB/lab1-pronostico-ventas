@@ -21,7 +21,7 @@ def _huella_total(archivos: dict[str, str]) -> str:
     return hashlib.sha256(json.dumps(archivos, sort_keys=True).encode()).hexdigest()
 
 
-def _huella_entrada(contenido: str, cfg: config.Configuracion) -> str:
+def _huella_entrada(contenido: str, cfg: config.Configuracion, solo_historico: bool = False) -> str:
     excluidas = (
         "raiz", "kaggle", "historico", "bandeja", "almacen", "cuarentena", "procesado", "publicado", "estado_publicaciones",
         "seguimiento", "modelos", "reportes",
@@ -29,7 +29,7 @@ def _huella_entrada(contenido: str, cfg: config.Configuracion) -> str:
     )
     parametros = {k: v for k, v in asdict(cfg).items() if k not in excluidas}
     texto = json.dumps(parametros, sort_keys=True, default=str)
-    return hashlib.sha256(f"{contenido}{texto}".encode()).hexdigest()
+    return hashlib.sha256(f"{contenido}{texto}{solo_historico or ''}".encode()).hexdigest()
 
 
 def _nueva(destino: Path) -> Path:
@@ -157,14 +157,17 @@ def _instalar(pares: list[tuple[Path, Path]]) -> None:
         _eliminar(_respaldo(destino))
 
 
-def ejecutar(cfg: config.Configuracion, forzar: bool = False) -> dict:
-    """Genera las salidas. Si ya corresponden a la misma entrada, no cambia nada."""
+def ejecutar(cfg: config.Configuracion, forzar: bool = False, solo_historico: bool = False) -> dict:
+    """Genera las salidas. Si ya corresponden a la misma entrada, no cambia nada.
+
+    Con `solo_historico` no genera la bandeja: la entrega un sistema externo.
+    """
     cfg.historico.parent.mkdir(parents=True, exist_ok=True)
     cfg.bandeja.parent.mkdir(parents=True, exist_ok=True)
     _recuperar(cfg)
 
     tablas, contenido = kaggle.leer(cfg.kaggle)
-    entrada = _huella_entrada(contenido, cfg)
+    entrada = _huella_entrada(contenido, cfg, solo_historico)
     if not forzar and _vigente(cfg, entrada):
         return _leer_manifiesto(cfg.historico)
 
@@ -173,8 +176,10 @@ def ejecutar(cfg: config.Configuracion, forzar: bool = False) -> dict:
     if fin <= cfg.corte_historico:
         raise ValueError("El corte histórico debe ser anterior al fin de la bandeja")
 
-    entregas = bandeja.construir(tablas, cfg, fin)
-    entregas, registro = incidentes.aplicar(entregas, cfg.incidentes, cfg.semilla)
+    entregas, registro = [], []
+    if not solo_historico:
+        entregas = bandeja.construir(tablas, cfg, fin)
+        entregas, registro = incidentes.aplicar(entregas, cfg.incidentes, cfg.semilla)
 
     # Cada carpeta nueva se prepara junto a su destino para instalarla con un renombrado,
     # sin copias parciales aunque BANDEJA_DIR esté en otro sistema de archivos.
@@ -209,8 +214,9 @@ def ejecutar(cfg: config.Configuracion, forzar: bool = False) -> dict:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--forzar", action="store_true", help="regenera aunque las salidas estén vigentes")
+    parser.add_argument("--solo-historico", action="store_true", help="no genera la bandeja, para usar una externa")
     args = parser.parse_args()
-    manifiesto = ejecutar(config.cargar(), forzar=args.forzar)
+    manifiesto = ejecutar(config.cargar(), forzar=args.forzar, solo_historico=args.solo_historico)
     print(json.dumps({k: manifiesto[k] for k in ("corte_historico", "fin_bandeja", "filas_historico", "huella_salida")}, indent=2))
     print(f"Archivos en la bandeja: {len(manifiesto['bandeja'])}")
     print(f"Incidentes: {len(manifiesto['incidentes'])}")

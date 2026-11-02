@@ -70,9 +70,7 @@ def commit_publicacion(cfg: Configuracion, etiqueta: str) -> str:
 def versionar(cfg: Configuracion, corte: date, revision: int) -> None:
     """Registra publicación, almacén, procesados y modelos en DVC, y crea el commit de publicación."""
     destino = carpeta(cfg, corte, revision)
-    objetivos = [cfg.kaggle, cfg.historico, destino, cfg.almacen, cfg.cuarentena, cfg.procesado, cfg.seguimiento, cfg.modelos]
-    if not os.environ.get("BANDEJA_HOST"):
-        objetivos.append(cfg.bandeja)
+    objetivos = [cfg.kaggle, cfg.historico, cfg.bandeja, destino, cfg.almacen, cfg.cuarentena, cfg.procesado, cfg.seguimiento, cfg.modelos]
     relativas = [str(p.relative_to(cfg.raiz)) for p in objetivos if p.exists()]
     try:
         # Sin reenlazar: la bandeja se monta en solo lectura y sus archivos no deben reemplazarse.

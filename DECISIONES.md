@@ -22,6 +22,7 @@ Principio: toda predicción se construye solo con la información disponible cua
 | Toda feature se construye con `as_of(corte)` | Filtrar por fecha en cada feature | Un único punto de acceso evita fugas por construcción |
 | La disponibilidad sale de la fecha de entrega, nunca del reloj | Hora de ejecución o fecha del archivo | Hace determinista el backfill y reproducible cualquier ejecución |
 | Fuentes separadas por frecuencia y retraso, en `config/fuentes.yaml` | Tratar todas igual | El enunciado pide distinta frecuencia y anticipación |
+| Con una bandeja externa, la carga histórica sigue saliendo de los archivos de Kaggle | Exigir el histórico dentro de la bandeja | El enunciado parte de los archivos de Kaggle y de un periodo posterior no publicado |
 | Petróleo: solo el último valor conocido; nunca precios futuros | Usar el archivo completo | `oil.csv` llega más allá del fin de las ventas |
 | Feriados: anuales desde enero; traslados y puentes con 14 días; eventos imprevistos el mismo día (supuesto) | Conocerlos todos por adelantado | Un traslado o un terremoto no se conocen con un año de anticipación |
 | Promociones: plan semanal publicado cada domingo (supuesto) | Usar `onpromotion` futuro sin restricción | Limita la información futura a lo que un plan podría conocer |
@@ -126,6 +127,7 @@ Los costos son **supuestos académicos ilustrativos, no costos reales de Corpora
 |---|---|---|
 | Airflow 3 con Docker Compose y LocalExecutor | CeleryExecutor | Suficiente para un equipo, con menos memoria |
 | Orquestador `operacion_diaria` | Sensores entre DAGs | Garantiza el orden y permite un solo backfill |
+| `make up` ejecuta el simulador antes de crear los servicios | Arranque simultáneo | Quien monta la bandeja debe verla ya instalada |
 | Lógica en `src/`; los DAGs solo invocan funciones | Lógica en los DAGs | Se puede probar sin Airflow |
 | Tareas pesadas en un pool de un cupo | Paralelismo | Memoria limitada y bloqueos de DVC |
 | Tarea final `cierre` | Confiar en el estado de la corrida | Una corrida no debe quedar verde con un respaldo fallido |
