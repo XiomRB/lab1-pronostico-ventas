@@ -50,9 +50,9 @@ def commit_publicacion(cfg: Configuracion, etiqueta: str) -> str:
         entorno = {"GIT_INDEX_FILE": str(Path(temporal) / "indice")}
         _exigir(_correr(cfg, "git", "read-tree", base, entorno=entorno), "read-tree")
         if previo:
-            lista = _exigir(_correr(cfg, "git", "ls-tree", "-r", previo, "--", "data", "models"), "ls-tree")
+            lista = _exigir(_correr(cfg, "git", "ls-tree", "-r", previo, "--", "data", "models.dvc"), "ls-tree")
             _exigir(_correr(cfg, "git", "update-index", "--index-info", entorno=entorno, entrada=lista), "update-index")
-        referencias = [str(r.relative_to(cfg.raiz)) for c in ("data", "models") for r in (cfg.raiz / c).rglob("*.dvc")]
+        referencias = sorted(str(r.relative_to(cfg.raiz)) for r in [*cfg.raiz.glob("*.dvc"), *(cfg.raiz / "data").rglob("*.dvc")])
         _exigir(_correr(cfg, "git", "add", "-f", "--", *referencias, entorno=entorno), "add")
         arbol = _exigir(_correr(cfg, "git", "write-tree", entorno=entorno), "write-tree").strip()
     padres = ["-p", previo] if previo else []

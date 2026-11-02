@@ -88,7 +88,8 @@ Cada publicación crea un commit en la rama local `publicaciones`, con su etique
 ### Recuperar y reproducir un pronóstico pasado
 
 ```bash
-python scripts/recuperar_pronostico.py --corte 2017-04-03 --revision 1 --destino ../recuperado
+make install
+.venv/bin/python scripts/recuperar_pronostico.py --corte 2017-04-03 --revision 1 --destino ../recuperado
 cd ../recuperado
 docker run --rm -u "$(id -u):0" -e PYTHONPATH=/opt/lab1/src -e OMP_NUM_THREADS=4 \
   -v "$PWD":/opt/lab1 -w /opt/lab1 lab1-pronostico:3.3.2 \
