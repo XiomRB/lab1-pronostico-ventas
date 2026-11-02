@@ -119,6 +119,21 @@ def test_reprocesar_crea_revision_y_conserva_la_original(cfg):
     pd.testing.assert_frame_equal(publicada(cfg)[0], original[0])
 
 
+def test_reproceso_conserva_el_modelo_original(cfg):
+    from pronostico_ventas.ingesta.proceso import ingerir
+
+    publicar.publicar(cfg, CORTE)
+    original = entrenamiento.leer_vigente(cfg)
+    nuevo = entrenamiento.entrenar(cfg, "baseline", date(2017, 3, 13))
+    entrenamiento.fijar_vigente(cfg, nuevo["id"])
+    (cfg.bandeja / "ventas_2017-03-05__entrega_2017-03-07.csv").write_text(
+        "date,store_nbr,family,sales,onpromotion\n2017-03-05,1,GROCERY I,9999.0,0\n"
+    )
+    ingerir(cfg, date(2017, 3, 17))
+    resultado = publicar.publicar(cfg, CORTE, reprocesar_en=date(2017, 3, 17))
+    assert resultado["manifiesto"]["modelo"]["id"] == original
+
+
 def test_reproceso_idempotente(cfg):
     publicar.publicar(cfg, CORTE)
     assert publicar.publicar(cfg, CORTE, reprocesar_en=CORTE)["resultado"] == "sin_cambios"
