@@ -26,7 +26,9 @@ Los DAGs arrancan sin pausa y el orquestador `operacion_diaria` procesa solo el 
 
 El periodo se configura en `.env`, con `LAB1_INICIO` y `LAB1_FIN`, y el corte histórico en `config/simulacion.yaml`.
 
-Para usar una bandeja externa con el formato de [docs/contrato_bandeja.md](docs/contrato_bandeja.md), define `BANDEJA_HOST=/ruta/absoluta` en `.env`. La carpeta se monta en solo lectura y no se ejecuta el simulador.
+Para usar una bandeja externa con el formato de [docs/contrato_bandeja.md](docs/contrato_bandeja.md), ejecuta `make setup`, define `BANDEJA_HOST=/ruta/absoluta` en `.env` y después `make up`. La carpeta se monta en solo lectura y el simulador genera solo la carga histórica desde los archivos de Kaggle. Cada publicación registra en DVC la bandeja recibida.
+
+`make down` conserva los metadatos de Airflow. Para repetir una ejecución desde cero en la misma máquina, elimínalos con `docker compose --env-file .env -f airflow/docker-compose.yaml down -v` y parte de un clon nuevo. El proyecto de Compose es el mismo, de modo que dos clones comparten ese volumen.
 
 ### Backfill y reproceso
 
