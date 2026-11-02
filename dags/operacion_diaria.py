@@ -40,4 +40,6 @@ with DAG(
     seguimiento = flujo("seguimiento", "seguimiento_desempeno", trigger_rule="all_done")
     entrenar = flujo("entrenamiento", "entrenamiento")
     cierre = PythonOperator(task_id="cierre", python_callable=cerrar, trigger_rule="all_done", retries=0)
-    ingesta >> revisiones >> corte >> preparacion >> pronostico >> seguimiento >> entrenar >> cierre
+    # Las revisiones son una rama final: si fallan, la corrida queda en rojo sin bloquear el corte.
+    ingesta >> revisiones
+    ingesta >> corte >> preparacion >> pronostico >> seguimiento >> entrenar >> cierre
