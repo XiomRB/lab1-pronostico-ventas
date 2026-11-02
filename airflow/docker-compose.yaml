@@ -90,8 +90,8 @@ services:
       - |
         set -e
         if [ -n "$${BANDEJA_HOST:-}" ]; then
-          echo "Bandeja externa: no se genera la simulación"
-          exit 0
+          echo "Bandeja externa: solo se genera la carga histórica"
+          exec /entrypoint python -m pronostico_ventas.simulador --solo-historico
         fi
         /entrypoint python -m pronostico_ventas.simulador
     volumes:

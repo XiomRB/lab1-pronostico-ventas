@@ -402,3 +402,17 @@ def test_regeneracion_forzada_sigue_funcionando(proyecto_sintetico):
     primero = correr(proyecto_sintetico)
     assert correr(proyecto_sintetico, forzar=True) == primero
     assert residuos(proyecto_sintetico) == []
+
+
+def test_solo_historico_no_genera_bandeja(proyecto_sintetico):
+    manifiesto = simulador.ejecutar(config.cargar(proyecto_sintetico), solo_historico=True)
+    assert manifiesto["bandeja"] == {}
+    assert list(bandeja(proyecto_sintetico).iterdir()) == []
+    assert (historico(proyecto_sintetico) / "ventas.parquet").is_file()
+
+
+def test_solo_historico_es_idempotente(proyecto_sintetico):
+    simulador.ejecutar(config.cargar(proyecto_sintetico), solo_historico=True)
+    antes = huellas(historico(proyecto_sintetico))
+    simulador.ejecutar(config.cargar(proyecto_sintetico), solo_historico=True)
+    assert huellas(historico(proyecto_sintetico)) == antes
