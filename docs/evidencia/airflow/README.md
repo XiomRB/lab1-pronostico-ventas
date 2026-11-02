@@ -1,14 +1,23 @@
 # Evidencia de Airflow
 
-Exportaciones por consola de la ejecución limpia sobre `main` en el commit `8e160ad`, en `verificacion_final.txt`. No son capturas de la interfaz.
+Exportaciones por consola, no capturas de la interfaz.
 
-| Contenido | Resultado |
+| Archivo | Ejecución | Contenido |
+|---|---|---|
+| `verificacion_final.txt` | Final, commit `8e160ad` | Corridas, ingesta, hashes por corte, backfill, reproceso y DVC |
+| `corridas_resumen.txt` | Ensayo, commit `a193b76` | Corridas por DAG |
+| `corridas_operacion_diaria.txt` | Ensayo, commit `a193b76` | Estado de cada corrida diaria |
+| `publicaciones.txt` | Ensayo, commit `a193b76` | Estado de las publicaciones |
+| `backfill.txt` | Ensayo, commit `a193b76` | Backfill |
+
+## Resultado de la ejecución final
+
+| Medida | Resultado |
 |---|---|
 | Corridas de `operacion_diaria` | 146 de 146 exitosas |
 | Ingesta | 399 aceptados, 2 duplicados, 2 rechazados |
-| Publicaciones | 21 `RESPALDADA` |
-| Hashes de pronóstico y pedido por corte | Incluidos |
-| Backfill con `completed` | Misma huella |
-| Reproceso del corte 2017-04-17 | Revisión 2 `RESPALDADA`; repetirlo no crea otra |
+| Publicaciones | 21 `RESPALDADA`, más la revisión 2 del corte 2017-04-17 creada por el reproceso |
+| Backfill con `completed` | Misma huella antes y después |
+| Reproceso repetido | No crea otra revisión |
 
-La publicación del 2017-08-21 usa ventas con 6 días de atraso, dentro del umbral configurado. Una revisión posterior quedó omitida por antigüedad.
+Hay un registro de omisión para el corte 2017-08-21, motivo `datos_antiguos:['ventas']` con 7 días de atraso. Las ventas terminan el 2017-08-15. La revisión 1 de ese corte existe y sigue `RESPALDADA`.

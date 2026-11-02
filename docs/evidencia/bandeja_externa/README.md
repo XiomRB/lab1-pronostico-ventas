@@ -15,3 +15,5 @@ Ejecución en Airflow con `BANDEJA_HOST`, en una instalación limpia del código
 | Repetición con backfill | Mismos datos y mismas revisiones |
 | Recuperación con Git y DVC | Archivos idénticos, incluida la bandeja recibida |
 | `dvc status -c --json` | `{}` |
+
+`escenario.txt` es la ejecución vigente, sobre el commit `9e4ceb2`. `escenario_ensayo.txt` es la ejecución anterior y se conserva como antecedente.
