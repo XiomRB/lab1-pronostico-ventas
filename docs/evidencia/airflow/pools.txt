@@ -1,0 +1,3 @@
+pool            slots  description                  include_
+default_pool      128  Default pool                 False
+pesado              1  tareas pesadas serializadas  False

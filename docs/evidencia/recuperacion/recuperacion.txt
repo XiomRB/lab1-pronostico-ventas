@@ -1,0 +1,49 @@
+=== reproceso: corte 2017-04-17 con la correccion del 2017-04-14 ===
+  "resultado": "publicada",
+  "corte": "2017-04-17",
+  "revision": 2
+['2017-04-17-r2']
+rev1 intacta: si
+rev 1 as_of 2017-04-17 revisa_a None hash_pedido 47525f72a2ac commit a193b76 modelo baseline_2017-03-31 arbol_limpio True
+rev 2 as_of 2017-04-24 revisa_a 1 hash_pedido 5a85776ad6be commit a193b76 modelo baseline_2017-03-31 arbol_limpio True
+RESPALDADA
+=== recuperacion y reproduccion 2017-04-03 ===
+Publicación recuperada en ../rec_2017-04-03/data/publicado/corte=2017-04-03/rev=1
+pub/2017-04-03-r1
+baseline_2017-03-31 vigente.json 
+identico byte a byte: pronostico.parquet
+identico byte a byte: pedido.parquet
+identico byte a byte: manifest.json
+{
+  "hash_pronostico": "01e8b8561d76971227382feebf768e97c0e522dca480db91137f703495bea085",
+  "hash_pedido": "b9b2f674fd6192bee66a20f3933b0deb35fb11f8c29229e73ec436c4e52f6fc9",
+  "esperado_pronostico": "01e8b8561d76971227382feebf768e97c0e522dca480db91137f703495bea085
+  "esperado_pedido": "b9b2f674fd6192bee66a20f3933b0deb35fb11f8c29229e73ec436c4e52f6fc9",
+  "identico": true
+}
+reproducir exit=0
+=== recuperacion y reproduccion 2017-06-12 ===
+Publicación recuperada en ../rec_2017-06-12/data/publicado/corte=2017-06-12/rev=1
+pub/2017-06-12-r1
+baseline_2017-03-31 baseline_2017-05-01 baseline_2017-05-29 
+identico byte a byte: pronostico.parquet
+identico byte a byte: pedido.parquet
+identico byte a byte: manifest.json
+{
+  "hash_pronostico": "075bf480edd67aaf57655ba064269955b8a02620dc6a9b86b8a67824a5de1b71",
+  "hash_pedido": "d5af9124f7e4ab1c6e221294675d59fedd24c9586ac3e782d54fe908f85c245a",
+  "esperado_pronostico": "075bf480edd67aaf57655ba064269955b8a02620dc6a9b86b8a67824a5de1b71
+  "esperado_pedido": "d5af9124f7e4ab1c6e221294675d59fedd24c9586ac3e782d54fe908f85c245a",
+  "identico": true
+}
+reproducir exit=0
+=== rev 2 tambien ===
+  "identico": true
+=== respaldo tar ===
+<proyecto>/otro_medio/dvc-storage-lab1-20261101-193710.tar
+dvc-storage-lab1-20261101-193710.tar: OK
+94115840 bytes
+dvc-storage-lab1-20261101-193710.tar: OK
+Remoto restaurado en <proyecto>/restaurado/dvc-storage/lab1
+872 files added
+recuperado desde tar, identico
