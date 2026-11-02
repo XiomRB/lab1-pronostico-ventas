@@ -6,6 +6,9 @@ rutas:
   almacen: data/almacen
   cuarentena: data/cuarentena
   procesado: data/procesado
+  publicado: data/publicado
+  estado_publicaciones: data/estado_publicaciones
+  seguimiento: data/seguimiento
   modelos: models
   reportes: reportes
 
