@@ -1,3 +1,0 @@
-21 Counter({'RESPALDADA': 21})
-[]
-omitidas 1

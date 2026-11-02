@@ -1,3 +1,0 @@
-scheduled__2017-05-02T06:00:00+00:00 success
-scheduled__2017-05-01T06:00:00+00:00 success
-antes 595b77a8f17894c14e7f despues 595b77a8f17894c14e7f

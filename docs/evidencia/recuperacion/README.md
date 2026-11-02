@@ -1,12 +1,10 @@
 # Evidencia de recuperación
 
-Comandos y resultados en una instalación limpia, en `recuperacion.txt`.
+Comandos y resultados en `recuperacion.txt`. Cada clon parte sin caché, y los objetos llegan del remoto DVC local.
 
 | Prueba | Resultado |
 |---|---|
-| Reproceso del corte 2017-04-17 | Revisión 2 creada con la corrección; revisión 1 intacta |
-| Recuperación de 2017-04-03 y 2017-06-12 con Git y DVC | Archivos idénticos byte a byte, incluido el modelo |
-| Reproducción dentro de la imagen | Hashes idénticos a los del manifiesto, también en una revisión |
-| Respaldo `.tar` y restauración | SHA-256 verificado; recuperación idéntica desde el remoto restaurado |
-
-`dvc_estado.txt` muestra `dvc status -c --json` igual a `{}` tras la última publicación.
+| Recuperación de `pub/2017-04-03-r1` y `pub/2017-06-12-r1` | Archivos idénticos byte a byte, con datos y modelos |
+| Revisión `pub/2017-04-17-r2` | Recuperada |
+| Reproducción dentro de la imagen | Hashes idénticos a los del manifiesto |
+| Respaldo `.tar` y restauración | SHA-256 verificado; recuperación idéntica |

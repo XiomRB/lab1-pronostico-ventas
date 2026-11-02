@@ -1,0 +1,60 @@
+commit main: 8e160ad07d92e6764694d776d528ec693f7d7b0a
+=== corridas por DAG ===
+operacion_diaria:  146 success 
+ingesta_validacion:  146 success 
+preparacion_datos:  21 success 
+pronostico_pedido:  21 success 
+seguimiento_desempeno:  21 success 
+entrenamiento:  21 success 
+errores de importacion: No data found
+=== ingesta ===
+403 Counter({'aceptado': 399, 'duplicado': 2, 'rechazado': 2})
+advertencias Counter({'valor_extremo': 113, 'archivo_parcial': 4, 'tienda_desconocida': 1})
+ rechazado ventas_2017-07-08__entrega_2017-07-09.csv ['columnas_faltantes:sales']
+ rechazado ventas_2017-05-04__entrega_2017-05-05.csv ['valor_negativo:sales']
+=== publicaciones ===
+21 Counter({'RESPALDADA': 21}) omitidas 1
+commits {'8e160ad'} arbol_limpio True modelos ['baseline_2017-03-31', 'baseline_2017-05-01', 'baseline_2017-05-29', 'baseline_2017-06-26', 'baseline_2
+  2017-04-03 1 01e8b8561d769712 b9b2f674fd6192be baseline_2017-03-31 e34ad0ee0bf9
+  2017-04-10 1 a149c18b22ba0af7 4d192eeed83af78a baseline_2017-03-31 122766b89f68
+  2017-04-17 1 d2da419403292b0e 47525f72a2ac792b baseline_2017-03-31 8ecdc14b706b
+  2017-04-24 1 1fe0287190854059 ececc56ecb1d2cff baseline_2017-03-31 bf0b2b7f833b
+  2017-05-01 1 14377a9d48eb5607 dd7a0f0a9d6908f1 baseline_2017-03-31 42ab0ab566ca
+  2017-05-08 1 5aca67675f98e200 b8269a3c1f793a1d baseline_2017-05-01 1847489b930d
+  2017-05-15 1 63918424122f205a b8ec8af583cf42b3 baseline_2017-05-01 a56a1b4c3cf2
+  2017-05-22 1 170d95af936cb46b 7c4c06dc9b5262d3 baseline_2017-05-01 dfa0767fb8e3
+  2017-05-29 1 93f8e027f20b1728 05ab77f490adfa14 baseline_2017-05-01 bc7c3bb63dda
+  2017-06-05 1 fcc94f60db037383 36fc83c28151f137 baseline_2017-05-29 03b0dfdd6f6c
+  2017-06-12 1 075bf480edd67aaf d5af9124f7e4ab1c baseline_2017-05-29 27372de7803c
+  2017-06-19 1 994ad8caf38d9bf4 cc538679285f7fe7 baseline_2017-05-29 44b6ea145577
+  2017-06-26 1 0bbe136668b1b0fb 0d3350b23ae41bac baseline_2017-05-29 cac4c3eddfc2
+  2017-07-03 1 98864c9af55d6662 6e97593d6e22af7c baseline_2017-06-26 2fcf6a193df1
+  2017-07-10 1 a750c4a10087e7e1 7137a9d82cecedc2 baseline_2017-06-26 edba1183850d
+  2017-07-17 1 ccbe51245f3b36ac 809310f0bb342b47 baseline_2017-06-26 e410adf52a35
+  2017-07-24 1 addd9f7156a632fc 4db64b2b80be2109 baseline_2017-06-26 c6c972e85c99
+  2017-07-31 1 54ad47bee715a3a4 161092f7609d2fff baseline_2017-07-24 e8253fc5ebf0
+  2017-08-07 1 121c1d22d22aba35 6b5cf0590569a390 baseline_2017-07-24 d346a2f33d7f
+  2017-08-14 1 fba9705f4eff52cb 67cb5eaddf47878b baseline_2017-07-24 5133f3844875
+  2017-08-21 1 29dd7aafce858587 8ede681dd27b3737 baseline_2017-07-24 6d1fd2a902c0
+etiquetas: 21 commits publicaciones: 57
+rutas de datos en publicaciones: 0
+=== backfill de dias ya procesados, con completed ===
+2
+scheduled__2017-05-02T06:00:00+00:00 success
+scheduled__2017-05-01T06:00:00+00:00 success
+huella antes 291a7c8ecaaebe241233 despues 291a7c8ecaaebe241233
+=== reproceso: corte 2017-04-17 con la correccion del 2017-04-14 ===
+  "resultado": "publicada",
+  "revision": 2
+['2017-04-17-r2']
+revision 1 intacta: si
+rev 1 as_of 2017-04-17 revisa_a None hash_pedido 47525f72a2ac792b
+rev 2 as_of 2017-04-24 revisa_a 1 hash_pedido 5a85776ad6be1ae4
+RESPALDADA
+repetir el reproceso:   "resultado": "sin_cambios",
+publicaciones previas: 069ca1a4fe4263681159 -> 9662aa7fce780dd70e4a
+=== DVC ===
+{}
+1
+102M
+2346
