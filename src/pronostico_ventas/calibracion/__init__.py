@@ -1,0 +1,1 @@
+"""Cuantiles por residuos escalados."""

@@ -14,6 +14,7 @@ OBLIGATORIOS = [
     "DECISIONES.md",
     "Makefile",
     "README.md",
+    "config/costos.yaml",
     "config/fuentes.yaml",
     "config/modelo.yaml",
     "config/simulacion.yaml",

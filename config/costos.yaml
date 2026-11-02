@@ -1,0 +1,15 @@
+# Supuestos académicos ilustrativos. No son costos reales de Corporación Favorita.
+# cu: costo por unidad de quedarse sin producto. co: costo por unidad sobrante.
+defecto:
+  cu: 2.0
+  co: 1.0
+grupos:
+  perecibles:
+    cu: 1.5
+    co: 1.0
+    familias: [BREAD/BAKERY, DAIRY, DELI, EGGS, MEATS, POULTRY, PREPARED FOODS, PRODUCE, SEAFOOD]
+  alta_rotacion:
+    cu: 4.0
+    co: 1.0
+    familias: [BEVERAGES, CLEANING, FROZEN FOODS, GROCERY I, GROCERY II, HOME CARE, PERSONAL CARE]
+familias_fraccionarias: [BREAD/BAKERY, DELI, FROZEN FOODS, GROCERY I, MEATS, POULTRY, PREPARED FOODS, PRODUCE, SEAFOOD]
