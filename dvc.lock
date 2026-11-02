@@ -1,0 +1,48 @@
+schema: '2.0'
+stages:
+  comparar_modelos:
+    cmd: make evaluate
+    deps:
+    - path: config/costos.yaml
+      hash: md5
+      md5: bd125598cce1f10579afa28f460e858f
+      size: 598
+    - path: config/modelo.yaml
+      hash: md5
+      md5: 4c4c7ef68a33b84e5021f687164d6302
+      size: 1416
+    - path: data/historico
+      hash: md5
+      md5: bfd67be55ff1ee83929480896dccd6d6.dir
+      size: 11637342
+      nfiles: 7
+    - path: src/pronostico_ventas/calibracion
+      hash: md5
+      md5: 1980f866971be571886fe7d8b374f942.dir
+      size: 13522
+      nfiles: 4
+    - path: src/pronostico_ventas/evaluacion
+      hash: md5
+      md5: 401c5742caf045cb3852e28335dcc9b9.dir
+      size: 37012
+      nfiles: 12
+    - path: src/pronostico_ventas/features
+      hash: md5
+      md5: a042e5adc42180eb7f1cf5e08aba9e12.dir
+      size: 21035
+      nfiles: 4
+    - path: src/pronostico_ventas/modelos
+      hash: md5
+      md5: 8264f08bd151c13e3d289d4e2ca895f0.dir
+      size: 8390
+      nfiles: 4
+    - path: src/pronostico_ventas/pedido
+      hash: md5
+      md5: e90f5dd84a215e24e343e0e029625ca5.dir
+      size: 5316
+      nfiles: 4
+    outs:
+    - path: reportes/comparacion_modelos.json
+      hash: md5
+      md5: 27c06ca4ad8f7540e2630bd6674f7eda
+      size: 33972

@@ -6,9 +6,48 @@ Proyecto académico en desarrollo.
 
 Este repositorio no contiene datos ni modelos.
 
-## Estado
+## Inicio rápido
 
-El proyecto está en construcción por fases. Este README se completará con las instrucciones para reconstruir el producto desde cero.
+Requisitos: Linux o WSL 2, Git, GNU Make, OpenSSL, y Docker con Compose. Se recomiendan al menos 4 GB de memoria libres para Docker. La primera construcción de la imagen necesita acceso a Docker Hub, PyPI, GitHub y los repositorios de Debian.
+
+```bash
+git clone https://github.com/XiomRB/lab1-pronostico-ventas.git lab1
+cd lab1
+mkdir -p data/kaggle
+cp /ruta/a/store-sales-time-series-forecasting.zip data/kaggle/
+make up
+```
+
+`make up` genera los secretos en `.env`, construye la imagen, prepara el remoto DVC en `../dvc-storage/lab1`, genera el histórico y la bandeja, y levanta Airflow en http://localhost:8080. El usuario es `airflow` y la clave es `_AIRFLOW_WWW_USER_PASSWORD` en `.env`.
+
+Los DAGs arrancan sin pausa y el orquestador `operacion_diaria` procesa solo el periodo configurado. No requiere intervención manual. `make down` detiene los servicios.
+
+### Periodo de evaluación
+
+El periodo se configura en `.env`, con `LAB1_INICIO` y `LAB1_FIN`, y el corte histórico en `config/simulacion.yaml`.
+
+Para usar una bandeja externa con el formato de [docs/contrato_bandeja.md](docs/contrato_bandeja.md), define `BANDEJA_HOST=/ruta/absoluta` en `.env`. La carpeta se monta en solo lectura y no se ejecuta el simulador.
+
+### Backfill y reproceso
+
+```bash
+docker compose --env-file .env -f airflow/docker-compose.yaml exec airflow-scheduler \
+  airflow backfill create --dag-id operacion_diaria \
+  --from-date 2017-08-01T00:00:00 --to-date 2017-08-07T23:59:00 \
+  --reprocess-behavior none --max-active-runs 1
+```
+
+`--to-date` debe incluir la hora. `--reprocess-behavior none` cubre periodos nuevos, y `failed` o `completed` repiten corridas ya ejecutadas. Solo puede haber un backfill activo por DAG.
+
+## Resultados
+
+| Salida | Ubicación |
+|---|---|
+| Pronósticos y pedidos | `data/publicado/corte=.../rev=N/` |
+| Estado de cada publicación | `data/estado_publicaciones/` |
+| Seguimiento del desempeño | `reportes/seguimiento.md` y `data/seguimiento/` |
+| Comparación de modelos | [docs/evidencia/modelos/comparacion.md](docs/evidencia/modelos/comparacion.md) |
+| Decisiones técnicas | [DECISIONES.md](DECISIONES.md) |
 
 ## Entorno de desarrollo
 
@@ -31,6 +70,42 @@ make verify-remote
 ```
 
 El remoto local no sustituye a un respaldo: comparte disco con el proyecto. Para que otro equipo recupere los datos, el almacenamiento debe entregarse o respaldarse junto con el repositorio.
+
+Comandos de DVC del proyecto:
+
+| Comando | Uso |
+|---|---|
+| `dvc add <ruta>` | Registrar datos, modelos o publicaciones |
+| `dvc push` | Copiar al remoto local |
+| `dvc pull` | Traer desde el remoto local |
+| `dvc status` | Ver cambios locales |
+| `dvc status -c --json` | Comprobar la sincronía: solo `{}` significa sincronizado |
+| `dvc checkout` | Alinear los archivos con los `.dvc` de un commit |
+| `dvc repro` | Reproducir el pipeline de `dvc.yaml` |
+
+Cada publicación crea un commit en la rama local `publicaciones`, con su etiqueta `pub/<corte>-r<N>`.
+
+### Recuperar y reproducir un pronóstico pasado
+
+```bash
+make install
+.venv/bin/python scripts/recuperar_pronostico.py --corte 2017-04-03 --revision 1 --destino ../recuperado
+cd ../recuperado
+docker run --rm -u "$(id -u):0" -e PYTHONPATH=/opt/lab1/src -e OMP_NUM_THREADS=4 \
+  -v "$PWD":/opt/lab1 -w /opt/lab1 lab1-pronostico:3.3.2 \
+  python scripts/reproducir_pronostico.py --corte 2017-04-03 --revision 1
+```
+
+La evidencia está en [docs/evidencia/recuperacion/](docs/evidencia/recuperacion/).
+
+### Respaldo
+
+```bash
+make backup-dvc DESTINO=/ruta/en/otro/medio
+make restore-dvc ARCHIVO=/ruta/en/otro/medio/dvc-storage-lab1-....tar
+```
+
+La restauración verifica el SHA-256 y no sobrescribe un remoto existente.
 
 ## Archivos de Kaggle y simulación
 
