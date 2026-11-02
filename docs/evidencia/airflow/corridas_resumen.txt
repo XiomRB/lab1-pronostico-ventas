@@ -1,0 +1,12 @@
+## operacion_diaria
+    146 success
+## ingesta_validacion
+    146 success
+## preparacion_datos
+     21 success
+## pronostico_pedido
+     21 success
+## seguimiento_desempeno
+     21 success
+## entrenamiento
+     21 success

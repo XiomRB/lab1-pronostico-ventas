@@ -18,17 +18,17 @@ stages:
       nfiles: 7
     - path: src/pronostico_ventas/calibracion
       hash: md5
-      md5: 6e00aa94ce25df7f1593a2c6c27f8d4f.dir
+      md5: 1980f866971be571886fe7d8b374f942.dir
       size: 13522
       nfiles: 4
     - path: src/pronostico_ventas/evaluacion
       hash: md5
-      md5: 67140a375447a884c57dae02a524ac24.dir
+      md5: 401c5742caf045cb3852e28335dcc9b9.dir
       size: 37012
       nfiles: 12
     - path: src/pronostico_ventas/features
       hash: md5
-      md5: 3d4ea25a5a7f98f271237d84f30f8edf.dir
+      md5: a042e5adc42180eb7f1cf5e08aba9e12.dir
       size: 21035
       nfiles: 4
     - path: src/pronostico_ventas/modelos
@@ -38,11 +38,11 @@ stages:
       nfiles: 4
     - path: src/pronostico_ventas/pedido
       hash: md5
-      md5: 6628d2a8408a9f473ed4932a3aaaa7de.dir
+      md5: e90f5dd84a215e24e343e0e029625ca5.dir
       size: 5316
       nfiles: 4
     outs:
     - path: reportes/comparacion_modelos.json
       hash: md5
-      md5: 6b8aceee031bbab38e248eda0a3e0f44
+      md5: 27c06ca4ad8f7540e2630bd6674f7eda
       size: 33972
