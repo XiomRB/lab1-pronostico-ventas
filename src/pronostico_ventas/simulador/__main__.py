@@ -23,7 +23,8 @@ def _huella_total(archivos: dict[str, str]) -> str:
 
 def _huella_entrada(contenido: str, cfg: config.Configuracion) -> str:
     excluidas = (
-        "raiz", "kaggle", "historico", "bandeja", "almacen", "cuarentena", "procesado", "modelos", "reportes",
+        "raiz", "kaggle", "historico", "bandeja", "almacen", "cuarentena", "procesado", "publicado", "estado_publicaciones",
+        "seguimiento", "modelos", "reportes",
         "validacion", "modelo", "costos",
     )
     parametros = {k: v for k, v in asdict(cfg).items() if k not in excluidas}
