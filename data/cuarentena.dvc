@@ -1,0 +1,6 @@
+outs:
+- md5: 3f3e7c7228676fd3b9aa47513b013f78.dir
+  size: 73781
+  nfiles: 2
+  hash: md5
+  path: cuarentena
