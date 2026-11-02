@@ -20,6 +20,9 @@ class Configuracion:
     almacen: Path
     cuarentena: Path
     procesado: Path
+    publicado: Path
+    estado_publicaciones: Path
+    seguimiento: Path
     modelos: Path
     reportes: Path
     corte_historico: date
@@ -80,6 +83,9 @@ def cargar(raiz: Path = RAIZ) -> Configuracion:
         almacen=_ruta(raiz, rutas["almacen"]),
         cuarentena=_ruta(raiz, rutas["cuarentena"]),
         procesado=_ruta(raiz, rutas["procesado"]),
+        publicado=_ruta(raiz, rutas["publicado"]),
+        estado_publicaciones=_ruta(raiz, rutas["estado_publicaciones"]),
+        seguimiento=_ruta(raiz, rutas["seguimiento"]),
         modelos=_ruta(raiz, rutas["modelos"]),
         reportes=_ruta(raiz, rutas["reportes"]),
         corte_historico=corte,
