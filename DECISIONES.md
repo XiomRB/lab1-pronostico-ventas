@@ -118,6 +118,8 @@ Los costos son **supuestos académicos ilustrativos, no costos reales de Corpora
 | Estado separado del manifiesto | Actualizar el manifiesto | El manifiesto es inmutable |
 | `RESPALDADA` exige montaje real, centinela, `dvc push`, sincronía por JSON y hashes | Confiar en `dvc push` | Cada señal cubre un fallo que las demás no detectan |
 | Rama `publicaciones` con commits creados sobre un índice temporal | Commits en `main` | `main` está protegida y el índice de trabajo no se altera |
+| Un commit de publicación se detiene si contiene caché, datos o modelos | Confiar en `.gitignore` | Los objetos de la caché no tienen extensión y un filtro por nombre no los detecta |
+| Publicaciones y etiquetas `pub/*` con solo referencias `.dvc` | Incluir datos en la etiqueta | Git no guarda datos; un clon recupera todo del remoto DVC |
 
 **Reproducir** recalcula una publicación con su modelo y lo conocido en su fecha, y debe dar hashes idénticos. **Reprocesar** usa datos corregidos y crea una revisión nueva.
 

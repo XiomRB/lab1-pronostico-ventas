@@ -75,6 +75,10 @@ def test_main_no_guarda_referencias_de_publicaciones(rastreados):
     assert prohibidos == []
 
 
+def test_git_no_rastrea_la_cache_de_dvc(rastreados):
+    assert [r for r in rastreados if r.startswith((".dvc/cache", ".dvc/tmp"))] == []
+
+
 def test_git_no_rastrea_secretos_locales(rastreados):
     prohibidos = [r for r in rastreados if re.search(r"(^|/)\.env(\.|$)", r) and r != ".env.example"]
     assert prohibidos == []

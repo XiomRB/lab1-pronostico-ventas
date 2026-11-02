@@ -1,41 +1,34 @@
+commit: 9e4ceb2 (main 8e160ad con la correccion de publicacion)
 === corridas ===
      33 success
-No data found
-=== bandeja externa: sin cambios y de solo lectura ===
+=== bandeja externa ===
 huella antes a832e34e30e97479192f despues a832e34e30e97479192f
 touch: cannot touch '/opt/lab1/data/bandeja/intruso': Read-only file system
 escritura_exit=1
 === publicaciones ===
-2017-04-03 1 RESPALDADA 
-2017-04-10 1 RESPALDADA 
-2017-04-17 1 RESPALDADA 
-2017-04-24 1 RESPALDADA 
-2017-04-24 2 RESPALDADA 
-2017-05-01 1 RESPALDADA 
-ventas_2017-04-19__entrega_2017-04-26.csv aceptado seq 73 conocido 2017-04-26
-ventas_2017-04-20__entrega_2017-04-21.csv aceptado seq 57 conocido 2017-04-21
-ventas_2017-04-20__entrega_2017-04-25.csv aceptado seq 69 conocido 2017-04-25
-ventas_2017-04-21__entrega_2017-04-22.csv aceptado seq 60 conocido 2017-04-22
-ventas_2017-04-21__entrega_2017-04-27.csv aceptado seq 77 conocido 2017-04-27
-2017-04-24 rev 1 as_of 2017-04-24 revisa_a None pedido 34f4ebd6ed16 pron 1b90086888d9
-2017-04-24 rev 2 as_of 2017-04-25 revisa_a 1 pedido 7c5bf0378e23 pron cafe05e99e6a
-=== datos futuros: as_of por fecha, en la imagen ===
+2017-04-03 1 RESPALDADA
+2017-04-10 1 RESPALDADA
+2017-04-17 1 RESPALDADA
+2017-04-24 1 RESPALDADA
+2017-04-24 2 RESPALDADA
+2017-05-01 1 RESPALDADA
+=== datos futuros ===
 04-19 (tardio) conocido en 04-24: (0, 0.0) | en 04-25: (0, 0.0) | en 04-26: (1782, 735733.21)
 04-20 (corregido) conocido en 04-24: (1782, 675804.02) | en 04-25: (1782, 2027412.07)
 04-21 (corregido tarde) en 04-26: (1782, 795795.89) | en 04-27: (1782, 1591591.79)
-=== repetir tareas: backfill completed 04-24 y 04-25 ===
+2017-04-24 rev 1 as_of 2017-04-24 revisa_a None pedido 34f4ebd6ed162130
+2017-04-24 rev 2 as_of 2017-04-25 revisa_a 1 pedido 7c5bf0378e2398d1
+=== repetir con backfill ===
 2
-scheduled__2017-04-25T06:00:00+00:00 success
-scheduled__2017-04-24T06:00:00+00:00 success
-antes e5f04303279ea3304f85 despues e5f04303279ea3304f85
-revisiones antes: rev=1 rev=1.dvc rev=2 rev=2.dvc | despues: rev=1 rev=1.dvc rev=2 rev=2.dvc 
-=== reproduccion rev 1 y rev 2 del 04-24 ===
+antes cd5d469ee73d5ce46c22 despues cd5d469ee73d5ce46c22 | revisiones: 2
+=== reproduccion ===
   "identico": true
   "identico": true
-=== recuperacion en clon ===
-pub/2017-04-03-r1 pub/2017-04-10-r1 pub/2017-04-17-r1 pub/2017-04-24-r1 pub/2017-04-24-r2 pub/2017-05-01-r1 
-Publicación recuperada en ../rec/data/publicado/corte=2017-04-24/rev=2
-identico: pedido.parquet
-identico: pronostico.parquet
-117
+=== etiquetas sin datos ===
+rutas cache: 0 blob mayor: 33972
+=== recuperacion sin cache ===
+cache en clon: 0
+405 files fetched and 393 files added
+identico
+archivos bandeja recibida: 117
 dvc status -c: {}

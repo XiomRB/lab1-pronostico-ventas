@@ -1,16 +1,7 @@
-=== reproceso: corte 2017-04-17 con la correccion del 2017-04-14 ===
-  "resultado": "publicada",
-  "corte": "2017-04-17",
-  "revision": 2
-['2017-04-17-r2']
-rev1 intacta: si
-rev 1 as_of 2017-04-17 revisa_a None hash_pedido 47525f72a2ac commit a193b76 modelo baseline_2017-03-31 arbol_limpio True
-rev 2 as_of 2017-04-24 revisa_a 1 hash_pedido 5a85776ad6be commit a193b76 modelo baseline_2017-03-31 arbol_limpio True
-RESPALDADA
-=== recuperacion y reproduccion 2017-04-03 ===
-Publicación recuperada en ../rec_2017-04-03/data/publicado/corte=2017-04-03/rev=1
-pub/2017-04-03-r1
-baseline_2017-03-31 vigente.json 
+commit de la ejecucion: 8e160ad. Etiquetas con solo referencias; objetos traidos del remoto local.
+=== pub/2017-04-03-r1: cache en clon 0 ===
+509 files fetched and 504 files added
+data/kaggle=1 data/historico=7 data/bandeja=403 data/almacen=8 data/procesado=78 models=4 
 identico byte a byte: pronostico.parquet
 identico byte a byte: pedido.parquet
 identico byte a byte: manifest.json
@@ -21,11 +12,9 @@ identico byte a byte: manifest.json
   "esperado_pedido": "b9b2f674fd6192bee66a20f3933b0deb35fb11f8c29229e73ec436c4e52f6fc9",
   "identico": true
 }
-reproducir exit=0
-=== recuperacion y reproduccion 2017-06-12 ===
-Publicación recuperada en ../rec_2017-06-12/data/publicado/corte=2017-06-12/rev=1
-pub/2017-06-12-r1
-baseline_2017-03-31 baseline_2017-05-01 baseline_2017-05-29 
+=== pub/2017-06-12-r1: cache en clon 0 ===
+996 files fetched and 982 files added
+data/kaggle=1 data/historico=7 data/bandeja=403 data/almacen=426 data/procesado=90 models=10 
 identico byte a byte: pronostico.parquet
 identico byte a byte: pedido.parquet
 identico byte a byte: manifest.json
@@ -36,14 +25,23 @@ identico byte a byte: manifest.json
   "esperado_pedido": "d5af9124f7e4ab1c6e221294675d59fedd24c9586ac3e782d54fe908f85c245a",
   "identico": true
 }
-reproducir exit=0
-=== rev 2 tambien ===
+=== pub/2017-04-17-r2: cache en clon 0 ===
+1446 files fetched and 1425 files added
+data/kaggle=1 data/historico=7 data/bandeja=403 data/almacen=804 data/procesado=100 models=19 
+identico byte a byte: pronostico.parquet
+identico byte a byte: pedido.parquet
+identico byte a byte: manifest.json
+{
+  "hash_pronostico": "7ee8ef8406bc35bbc1161904cb42b67890fda940363a16742950be55bdd87aca",
+  "hash_pedido": "5a85776ad6be1ae446b584f086fe070ec83326c9299c7aec17d5a8371e920cd8",
+  "esperado_pronostico": "7ee8ef8406bc35bbc1161904cb42b67890fda940363a16742950be55bdd87aca
+  "esperado_pedido": "5a85776ad6be1ae446b584f086fe070ec83326c9299c7aec17d5a8371e920cd8",
   "identico": true
-=== respaldo tar ===
-<proyecto>/otro_medio/dvc-storage-lab1-20261101-193710.tar
-dvc-storage-lab1-20261101-193710.tar: OK
-94115840 bytes
-dvc-storage-lab1-20261101-193710.tar: OK
-Remoto restaurado en <proyecto>/restaurado/dvc-storage/lab1
-872 files added
-recuperado desde tar, identico
+}
+=== respaldo tar del remoto real ===
+dvc-storage-lab1-20261101-213852.tar: OK
+100894720 bytes
+12fbf7166e0489985c2f539b3103b5728ae13d4c9d45a79da1023cb7efb1e3a8
+Remoto restaurado en <product-dev>/_final_v2_restaurado/dvc-storage/lab1
+900 files fetched and 887 files added
+recuperado desde el tar, identico

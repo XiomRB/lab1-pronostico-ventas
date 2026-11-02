@@ -89,14 +89,21 @@ Cada publicación crea un commit en la rama local `publicaciones`, con su etique
 
 ### Recuperar y reproducir un pronóstico pasado
 
+Cada publicación tiene una etiqueta `pub/<corte>-r<N>`, que une el código con sus referencias `.dvc`. Git solo guarda esas referencias: los datos y modelos se traen del remoto DVC local, que debe estar en `../dvc-storage/lab1`. Si otro equipo lo recibe como `.tar`, primero debe restaurarlo.
+
 ```bash
+git clone https://github.com/XiomRB/lab1-pronostico-ventas.git lab1
+cd lab1
 make install
-.venv/bin/python scripts/recuperar_pronostico.py --corte 2017-04-03 --revision 1 --destino ../recuperado
-cd ../recuperado
-docker run --rm -u "$(id -u):0" -e PYTHONPATH=/opt/lab1/src -e OMP_NUM_THREADS=4 \
+make image
+git checkout pub/2017-06-12-r1
+.venv/bin/python -m dvc pull
+docker run --rm -u "$(id -u):0" -e HOME=/tmp -e PYTHONPATH=/opt/lab1/src -e OMP_NUM_THREADS=4 \
   -v "$PWD":/opt/lab1 -w /opt/lab1 lab1-pronostico:3.3.2 \
-  python scripts/reproducir_pronostico.py --corte 2017-04-03 --revision 1
+  python scripts/reproducir_pronostico.py --corte 2017-06-12 --revision 1
 ```
+
+El resultado debe indicar `"identico": true`. La reproducción debe hacerse en la imagen, porque las predicciones pueden diferir en el host.
 
 La evidencia está en [docs/evidencia/recuperacion/](docs/evidencia/recuperacion/).
 
