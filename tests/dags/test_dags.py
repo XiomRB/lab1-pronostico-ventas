@@ -44,3 +44,9 @@ def test_dags_importan_en_airflow():
     bolsa = DagBag(str(CARPETA), include_examples=False)
     assert bolsa.import_errors == {}
     assert set(REQUERIDOS) <= set(bolsa.dag_ids)
+
+
+def test_revisiones_son_una_rama_final():
+    contenido = (CARPETA / "operacion_diaria.py").read_text(encoding="utf-8")
+    assert "ingesta >> revisiones\n" in contenido
+    assert "revisiones >> corte" not in contenido
