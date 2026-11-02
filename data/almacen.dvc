@@ -1,6 +1,6 @@
 outs:
-- md5: 42a6ed47268f9e4011aa1e7b85bbd155.dir
-  size: 119384
-  nfiles: 8
+- md5: 3db8e52d4a9418fdfe3aea4885fb4fc9.dir
+  size: 344076
+  nfiles: 52
   hash: md5
   path: almacen
