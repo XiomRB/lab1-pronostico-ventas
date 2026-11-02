@@ -19,6 +19,9 @@ class Configuracion:
     bandeja: Path
     almacen: Path
     cuarentena: Path
+    procesado: Path
+    modelos: Path
+    reportes: Path
     corte_historico: date
     fin_bandeja: date | None
     semilla: int
@@ -27,6 +30,8 @@ class Configuracion:
     fuentes: dict[str, Any]
     incidentes: dict[str, Any]
     validacion: dict[str, Any]
+    modelo: dict[str, Any]
+    costos: dict[str, Any]
 
 
 def _leer(ruta: Path) -> dict[str, Any]:
@@ -50,6 +55,7 @@ def cargar(raiz: Path = RAIZ) -> Configuracion:
     fuentes = _leer(raiz / "config" / "fuentes.yaml")
     modelo = _leer(raiz / "config" / "modelo.yaml")
     validacion = _leer(raiz / "config" / "validacion.yaml")
+    costos = _leer(raiz / "config" / "costos.yaml")
 
     faltantes = set(FUENTES) - set(fuentes)
     if faltantes:
@@ -73,6 +79,9 @@ def cargar(raiz: Path = RAIZ) -> Configuracion:
         bandeja=_ruta(raiz, os.environ.get("BANDEJA_DIR") or rutas["bandeja"]),
         almacen=_ruta(raiz, rutas["almacen"]),
         cuarentena=_ruta(raiz, rutas["cuarentena"]),
+        procesado=_ruta(raiz, rutas["procesado"]),
+        modelos=_ruta(raiz, rutas["modelos"]),
+        reportes=_ruta(raiz, rutas["reportes"]),
         corte_historico=corte,
         fin_bandeja=fin,
         semilla=simulacion["semilla"],
@@ -81,4 +90,6 @@ def cargar(raiz: Path = RAIZ) -> Configuracion:
         fuentes=fuentes,
         incidentes=simulacion["incidentes"],
         validacion=validacion,
+        modelo=modelo,
+        costos=costos,
     )

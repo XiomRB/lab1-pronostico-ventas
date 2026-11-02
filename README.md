@@ -71,6 +71,19 @@ Cada ingesta informa además avisos de completitud según la frecuencia de cada 
 
 Las limitaciones conocidas están en [docs/deuda_tecnica.md](docs/deuda_tecnica.md).
 
+## Modelado
+
+```bash
+make image
+make evaluate
+```
+
+`make evaluate` compara el baseline y los candidatos de `config/modelo.yaml` dentro de la imagen de Airflow, con los mismos 8 cortes, en serie y bajo un límite de memoria. Las predicciones pueden diferir entre el host y la imagen, por lo que los resultados válidos son los de la imagen.
+
+Las features de cada corte se construyen solo con `as_of`. Los cuantiles salen de residuos escalados de cortes posteriores al entrenamiento, y el pedido usa el cuantil crítico `Q* = Cu / (Cu + Co)` sobre la demanda acumulada del periodo. Los costos están en `config/costos.yaml` y son supuestos académicos.
+
+El resultado está en [docs/evidencia/modelos/comparacion.md](docs/evidencia/modelos/comparacion.md).
+
 ## Versiones
 
 | Paquete | Versión | Origen |

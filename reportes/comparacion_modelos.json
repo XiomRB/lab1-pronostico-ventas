@@ -1,0 +1,1252 @@
+{
+  "cortes": [
+    "2016-08-29",
+    "2016-09-26",
+    "2016-10-24",
+    "2016-11-21",
+    "2016-12-19",
+    "2017-01-16",
+    "2017-02-13",
+    "2017-03-13"
+  ],
+  "decisiones": {
+    "hgb_poisson": {
+      "condiciones": {
+        "cobertura_intervalo": true,
+        "cobertura_q": true,
+        "cortes_ganados": false,
+        "costo": true,
+        "pinball": true,
+        "wape": true
+      },
+      "cortes_ganados": 5,
+      "mejora_costo": 0.35063201682969314,
+      "reemplaza": false
+    },
+    "lightgbm": {
+      "condiciones": {
+        "cobertura_intervalo": true,
+        "cobertura_q": false,
+        "cortes_ganados": false,
+        "costo": true,
+        "pinball": true,
+        "wape": true
+      },
+      "cortes_ganados": 4,
+      "mejora_costo": 0.2692205621690339,
+      "reemplaza": false
+    },
+    "lightgbm_poisson": {
+      "condiciones": {
+        "cobertura_intervalo": true,
+        "cobertura_q": false,
+        "cortes_ganados": true,
+        "costo": true,
+        "pinball": true,
+        "wape": true
+      },
+      "cortes_ganados": 6,
+      "mejora_costo": 0.43663611382166645,
+      "reemplaza": false
+    }
+  },
+  "modelo_elegido": "baseline",
+  "modelos": {
+    "baseline": {
+      "cobertura_intervalo": 0.7516860294638072,
+      "cobertura_q": [
+        {
+          "cobertura": 0.5609567901234568,
+          "objetivo": 0.6
+        },
+        {
+          "cobertura": 0.7030228758169934,
+          "objetivo": 0.6666666666666666
+        },
+        {
+          "cobertura": 0.6931216931216931,
+          "objetivo": 0.8
+        }
+      ],
+      "costo_por_corte": [
+        2604946.7018101653,
+        971097.597176117,
+        1170739.394603241,
+        851594.0872446748,
+        4333641.832841354,
+        2877612.1123041078,
+        1211686.1879556426,
+        1084830.3404217681
+      ],
+      "costo_total": 15106148.254357072,
+      "cruces": 0,
+      "detalle": [
+        {
+          "corte": "2016-08-29",
+          "costo": 2604946.7018101653,
+          "cruces": 0,
+          "dentro_intervalo": 18008,
+          "filas": 24948,
+          "grupos_q": [
+            {
+              "cubiertos": 85,
+              "objetivo": 0.6,
+              "total": 486
+            },
+            {
+              "cubiertos": 518,
+              "objetivo": 0.6666666666666666,
+              "total": 918
+            },
+            {
+              "cubiertos": 97,
+              "objetivo": 0.8,
+              "total": 378
+            }
+          ],
+          "hash_predicciones": "c14aac9e3d684e6e",
+          "pinball": {
+            "0.1": 19.692724095412323,
+            "0.5": 45.002924701888915,
+            "0.9": 28.81002234039467
+          },
+          "rmsle": 0.8500515137095465,
+          "suma_abs_error": 2141288.711328447,
+          "suma_real": 11249736.488781273
+        },
+        {
+          "corte": "2016-09-26",
+          "costo": 971097.597176117,
+          "cruces": 0,
+          "dentro_intervalo": 20445,
+          "filas": 24948,
+          "grupos_q": [
+            {
+              "cubiertos": 182,
+              "objetivo": 0.6,
+              "total": 486
+            },
+            {
+              "cubiertos": 682,
+              "objetivo": 0.6666666666666666,
+              "total": 918
+            },
+            {
+              "cubiertos": 226,
+              "objetivo": 0.8,
+              "total": 378
+            }
+          ],
+          "hash_predicciones": "78aeff9335bf47e1",
+          "pinball": {
+            "0.1": 13.31645630773312,
+            "0.5": 34.71375719184745,
+            "0.9": 23.362550586298607
+          },
+          "rmsle": 0.4653067879574784,
+          "suma_abs_error": 1702125.3190995455,
+          "suma_real": 11307170.309962511
+        },
+        {
+          "corte": "2016-10-24",
+          "costo": 1170739.394603241,
+          "cruces": 0,
+          "dentro_intervalo": 18390,
+          "filas": 24948,
+          "grupos_q": [
+            {
+              "cubiertos": 404,
+              "objetivo": 0.6,
+              "total": 486
+            },
+            {
+              "cubiertos": 675,
+              "objetivo": 0.6666666666666666,
+              "total": 918
+            },
+            {
+              "cubiertos": 354,
+              "objetivo": 0.8,
+              "total": 378
+            }
+          ],
+          "hash_predicciones": "86170e629430e785",
+          "pinball": {
+            "0.1": 21.74136568041357,
+            "0.5": 47.02206338604792,
+            "0.9": 31.889449409174503
+          },
+          "rmsle": 0.7328785511147808,
+          "suma_abs_error": 2330771.902674198,
+          "suma_real": 11188756.323594332
+        },
+        {
+          "corte": "2016-11-21",
+          "costo": 851594.0872446748,
+          "cruces": 0,
+          "dentro_intervalo": 19260,
+          "filas": 24948,
+          "grupos_q": [
+            {
+              "cubiertos": 397,
+              "objetivo": 0.6,
+              "total": 486
+            },
+            {
+              "cubiertos": 706,
+              "objetivo": 0.6666666666666666,
+              "total": 918
+            },
+            {
+              "cubiertos": 327,
+              "objetivo": 0.8,
+              "total": 378
+            }
+          ],
+          "hash_predicciones": "df28aabfbf5f0c7a",
+          "pinball": {
+            "0.1": 15.356942508355615,
+            "0.5": 38.95651039882394,
+            "0.9": 26.417482461939
+          },
+          "rmsle": 0.545791703246389,
+          "suma_abs_error": 1945437.9429256916,
+          "suma_real": 11891256.270491362
+        },
+        {
+          "corte": "2016-12-19",
+          "costo": 4333641.832841354,
+          "cruces": 0,
+          "dentro_intervalo": 13358,
+          "filas": 23166,
+          "grupos_q": [
+            {
+              "cubiertos": 151,
+              "objetivo": 0.6,
+              "total": 486
+            },
+            {
+              "cubiertos": 365,
+              "objetivo": 0.6666666666666666,
+              "total": 918
+            },
+            {
+              "cubiertos": 69,
+              "objetivo": 0.8,
+              "total": 378
+            }
+          ],
+          "hash_predicciones": "d790a25808ecfa57",
+          "pinball": {
+            "0.1": 68.39779656125494,
+            "0.5": 115.98523951844338,
+            "0.9": 90.14534804337478
+          },
+          "rmsle": 1.4138659295125653,
+          "suma_abs_error": 5396031.998753428,
+          "suma_real": 13334475.379886985
+        },
+        {
+          "corte": "2017-01-16",
+          "costo": 2877612.1123041078,
+          "cruces": 0,
+          "dentro_intervalo": 17123,
+          "filas": 24948,
+          "grupos_q": [
+            {
+              "cubiertos": 380,
+              "objetivo": 0.6,
+              "total": 486
+            },
+            {
+              "cubiertos": 795,
+              "objetivo": 0.6666666666666666,
+              "total": 918
+            },
+            {
+              "cubiertos": 377,
+              "objetivo": 0.8,
+              "total": 378
+            }
+          ],
+          "hash_predicciones": "6a99bbea6e8d88fb",
+          "pinball": {
+            "0.1": 46.40092400739839,
+            "0.5": 81.54428391410978,
+            "0.9": 43.704392091005936
+          },
+          "rmsle": 0.5994660792057998,
+          "suma_abs_error": 3626384.854370475,
+          "suma_real": 11400604.726832747
+        },
+        {
+          "corte": "2017-02-13",
+          "costo": 1211686.1879556426,
+          "cruces": 0,
+          "dentro_intervalo": 21011,
+          "filas": 24948,
+          "grupos_q": [
+            {
+              "cubiertos": 385,
+              "objetivo": 0.6,
+              "total": 486
+            },
+            {
+              "cubiertos": 785,
+              "objetivo": 0.6666666666666666,
+              "total": 918
+            },
+            {
+              "cubiertos": 377,
+              "objetivo": 0.8,
+              "total": 378
+            }
+          ],
+          "hash_predicciones": "857a8129790a1132",
+          "pinball": {
+            "0.1": 22.55623768048458,
+            "0.5": 41.61295130664901,
+            "0.9": 29.985396387942227
+          },
+          "rmsle": 0.5705624842241824,
+          "suma_abs_error": 2021121.9955078363,
+          "suma_real": 10970278.403897166
+        },
+        {
+          "corte": "2017-03-13",
+          "costo": 1084830.3404217681,
+          "cruces": 0,
+          "dentro_intervalo": 21090,
+          "filas": 24948,
+          "grupos_q": [
+            {
+              "cubiertos": 197,
+              "objetivo": 0.6,
+              "total": 486
+            },
+            {
+              "cubiertos": 637,
+              "objetivo": 0.6666666666666666,
+              "total": 918
+            },
+            {
+              "cubiertos": 269,
+              "objetivo": 0.8,
+              "total": 378
+            }
+          ],
+          "hash_predicciones": "d6d426acab4e8ff0",
+          "pinball": {
+            "0.1": 17.53798820241519,
+            "0.5": 33.88681319201481,
+            "0.9": 18.961250544780327
+          },
+          "rmsle": 0.4721280938791416,
+          "suma_abs_error": 1578236.5452766418,
+          "suma_real": 11947574.906360626
+        }
+      ],
+      "pico_memoria_mb": 813,
+      "pinball": 39.875036271591796,
+      "rmsle": 0.7062563928562354,
+      "wape": 0.22233285448764095
+    },
+    "hgb_poisson": {
+      "cobertura_intervalo": 0.7673329895552118,
+      "cobertura_q": [
+        {
+          "cobertura": 0.6054526748971193,
+          "objetivo": 0.6
+        },
+        {
+          "cobertura": 0.7116013071895425,
+          "objetivo": 0.6666666666666666
+        },
+        {
+          "cobertura": 0.7619047619047619,
+          "objetivo": 0.8
+        }
+      ],
+      "costo_por_corte": [
+        926743.9952763672,
+        695384.6951404724,
+        803644.8006885529,
+        965929.9119305268,
+        2223284.9278594824,
+        1612852.583820343,
+        1408487.7915709077,
+        1173120.3191168518
+      ],
+      "costo_total": 9809449.025403503,
+      "cruces": 0,
+      "detalle": [
+        {
+          "corte": "2016-08-29",
+          "costo": 926743.9952763672,
+          "cruces": 0,
+          "dentro_intervalo": 18864,
+          "filas": 24948,
+          "grupos_q": [
+            {
+              "cubiertos": 188,
+              "objetivo": 0.6,
+              "total": 486
+            },
+            {
+              "cubiertos": 559,
+              "objetivo": 0.6666666666666666,
+              "total": 918
+            },
+            {
+              "cubiertos": 189,
+              "objetivo": 0.8,
+              "total": 378
+            }
+          ],
+          "hash_predicciones": "5ac32365d48b9e92",
+          "pinball": {
+            "0.1": 13.74323197676744,
+            "0.5": 32.22197341645668,
+            "0.9": 18.599323301684027
+          },
+          "rmsle": 0.46708140763026434,
+          "suma_abs_error": 1552342.893357216,
+          "suma_real": 11249736.488781273
+        },
+        {
+          "corte": "2016-09-26",
+          "costo": 695384.6951404724,
+          "cruces": 0,
+          "dentro_intervalo": 19661,
+          "filas": 24948,
+          "grupos_q": [
+            {
+              "cubiertos": 282,
+              "objetivo": 0.6,
+              "total": 486
+            },
+            {
+              "cubiertos": 656,
+              "objetivo": 0.6666666666666666,
+              "total": 918
+            },
+            {
+              "cubiertos": 291,
+              "objetivo": 0.8,
+              "total": 378
+            }
+          ],
+          "hash_predicciones": "43cb6f01ae949106",
+          "pinball": {
+            "0.1": 14.661333470798947,
+            "0.5": 32.14924392830837,
+            "0.9": 20.147045911492693
+          },
+          "rmsle": 0.7075141844551917,
+          "suma_abs_error": 1601632.589856123,
+          "suma_real": 11307170.309962511
+        },
+        {
+          "corte": "2016-10-24",
+          "costo": 803644.8006885529,
+          "cruces": 0,
+          "dentro_intervalo": 16831,
+          "filas": 24948,
+          "grupos_q": [
+            {
+              "cubiertos": 386,
+              "objetivo": 0.6,
+              "total": 486
+            },
+            {
+              "cubiertos": 742,
+              "objetivo": 0.6666666666666666,
+              "total": 918
+            },
+            {
+              "cubiertos": 328,
+              "objetivo": 0.8,
+              "total": 378
+            }
+          ],
+          "hash_predicciones": "998d426a67701f24",
+          "pinball": {
+            "0.1": 27.72103658226815,
+            "0.5": 43.5662498878452,
+            "0.9": 22.89477245583894
+          },
+          "rmsle": 0.7625171660142093,
+          "suma_abs_error": 2176122.140765859,
+          "suma_real": 11188756.323594332
+        },
+        {
+          "corte": "2016-11-21",
+          "costo": 965929.9119305268,
+          "cruces": 0,
+          "dentro_intervalo": 19758,
+          "filas": 24948,
+          "grupos_q": [
+            {
+              "cubiertos": 295,
+              "objetivo": 0.6,
+              "total": 486
+            },
+            {
+              "cubiertos": 688,
+              "objetivo": 0.6666666666666666,
+              "total": 918
+            },
+            {
+              "cubiertos": 287,
+              "objetivo": 0.8,
+              "total": 378
+            }
+          ],
+          "hash_predicciones": "7d25cf6a6b5b39d6",
+          "pinball": {
+            "0.1": 19.73950480403978,
+            "0.5": 38.88900076446742,
+            "0.9": 23.67003218770986
+          },
+          "rmsle": 0.6544805912317285,
+          "suma_abs_error": 1929031.927490945,
+          "suma_real": 11891256.270491362
+        },
+        {
+          "corte": "2016-12-19",
+          "costo": 2223284.9278594824,
+          "cruces": 0,
+          "dentro_intervalo": 13400,
+          "filas": 23166,
+          "grupos_q": [
+            {
+              "cubiertos": 343,
+              "objetivo": 0.6,
+              "total": 486
+            },
+            {
+              "cubiertos": 513,
+              "objetivo": 0.6666666666666666,
+              "total": 918
+            },
+            {
+              "cubiertos": 200,
+              "objetivo": 0.8,
+              "total": 378
+            }
+          ],
+          "hash_predicciones": "4d758d1b6844adfc",
+          "pinball": {
+            "0.1": 50.97239298475564,
+            "0.5": 90.76411676979176,
+            "0.9": 66.27931568932259
+          },
+          "rmsle": 1.2901365490814873,
+          "suma_abs_error": 4188097.254009558,
+          "suma_real": 13334475.379886985
+        },
+        {
+          "corte": "2017-01-16",
+          "costo": 1612852.583820343,
+          "cruces": 0,
+          "dentro_intervalo": 21681,
+          "filas": 24948,
+          "grupos_q": [
+            {
+              "cubiertos": 243,
+              "objetivo": 0.6,
+              "total": 486
+            },
+            {
+              "cubiertos": 663,
+              "objetivo": 0.6666666666666666,
+              "total": 918
+            },
+            {
+              "cubiertos": 351,
+              "objetivo": 0.8,
+              "total": 378
+            }
+          ],
+          "hash_predicciones": "6342511c8c613442",
+          "pinball": {
+            "0.1": 19.76975059730471,
+            "0.5": 49.28996771353111,
+            "0.9": 30.37175459320685
+          },
+          "rmsle": 0.46120800269872136,
+          "suma_abs_error": 2412591.797263004,
+          "suma_real": 11400604.726832747
+        },
+        {
+          "corte": "2017-02-13",
+          "costo": 1408487.7915709077,
+          "cruces": 0,
+          "dentro_intervalo": 21158,
+          "filas": 24948,
+          "grupos_q": [
+            {
+              "cubiertos": 382,
+              "objetivo": 0.6,
+              "total": 486
+            },
+            {
+              "cubiertos": 728,
+              "objetivo": 0.6666666666666666,
+              "total": 918
+            },
+            {
+              "cubiertos": 372,
+              "objetivo": 0.8,
+              "total": 378
+            }
+          ],
+          "hash_predicciones": "ded0f04f250e96f4",
+          "pinball": {
+            "0.1": 20.942483126619663,
+            "0.5": 47.780232305240766,
+            "0.9": 29.779331160611722
+          },
+          "rmsle": 0.5587315411894076,
+          "suma_abs_error": 2005129.4028994173,
+          "suma_real": 10970278.403897166
+        },
+        {
+          "corte": "2017-03-13",
+          "costo": 1173120.3191168518,
+          "cruces": 0,
+          "dentro_intervalo": 20427,
+          "filas": 24948,
+          "grupos_q": [
+            {
+              "cubiertos": 235,
+              "objetivo": 0.6,
+              "total": 486
+            },
+            {
+              "cubiertos": 677,
+              "objetivo": 0.6666666666666666,
+              "total": 918
+            },
+            {
+              "cubiertos": 286,
+              "objetivo": 0.8,
+              "total": 378
+            }
+          ],
+          "hash_predicciones": "d3006e8fa86490ac",
+          "pinball": {
+            "0.1": 15.08446378071137,
+            "0.5": 37.04722181711446,
+            "0.9": 21.072792056307012
+          },
+          "rmsle": 0.4401184556858669,
+          "suma_abs_error": 2164486.76088489,
+          "suma_real": 11947574.906360626
+        }
+      ],
+      "pico_memoria_mb": 1495,
+      "pinball": 32.79819047009146,
+      "rmsle": 0.6677234872483596,
+      "wape": 0.19326254917867858
+    },
+    "lightgbm": {
+      "cobertura_intervalo": 0.7755128866239978,
+      "cobertura_q": [
+        {
+          "cobertura": 0.595164609053498,
+          "objetivo": 0.6
+        },
+        {
+          "cobertura": 0.7185457516339869,
+          "objetivo": 0.6666666666666666
+        },
+        {
+          "cobertura": 0.7354497354497355,
+          "objetivo": 0.8
+        }
+      ],
+      "costo_por_corte": [
+        1337396.6317091675,
+        980949.0725434265,
+        913566.6352859649,
+        1081018.803604965,
+        2694317.293421097,
+        1534695.864651428,
+        1411787.2659982604,
+        1085530.9618959809
+      ],
+      "costo_total": 11039262.52911029,
+      "cruces": 0,
+      "detalle": [
+        {
+          "corte": "2016-08-29",
+          "costo": 1337396.6317091675,
+          "cruces": 0,
+          "dentro_intervalo": 19173,
+          "filas": 24948,
+          "grupos_q": [
+            {
+              "cubiertos": 194,
+              "objetivo": 0.6,
+              "total": 486
+            },
+            {
+              "cubiertos": 567,
+              "objetivo": 0.6666666666666666,
+              "total": 918
+            },
+            {
+              "cubiertos": 149,
+              "objetivo": 0.8,
+              "total": 378
+            }
+          ],
+          "hash_predicciones": "b692261d56aebeef",
+          "pinball": {
+            "0.1": 13.494031281568219,
+            "0.5": 34.5141829455932,
+            "0.9": 21.517697547895988
+          },
+          "rmsle": 0.4558731854267118,
+          "suma_abs_error": 1650384.17743061,
+          "suma_real": 11249736.488781273
+        },
+        {
+          "corte": "2016-09-26",
+          "costo": 980949.0725434265,
+          "cruces": 0,
+          "dentro_intervalo": 19717,
+          "filas": 24948,
+          "grupos_q": [
+            {
+              "cubiertos": 294,
+              "objetivo": 0.6,
+              "total": 486
+            },
+            {
+              "cubiertos": 696,
+              "objetivo": 0.6666666666666666,
+              "total": 918
+            },
+            {
+              "cubiertos": 289,
+              "objetivo": 0.8,
+              "total": 378
+            }
+          ],
+          "hash_predicciones": "799538726ef1d5d6",
+          "pinball": {
+            "0.1": 13.35437675886224,
+            "0.5": 34.087137629554086,
+            "0.9": 23.764500133699425
+          },
+          "rmsle": 0.41351785017506726,
+          "suma_abs_error": 1690199.090214457,
+          "suma_real": 11307170.309962511
+        },
+        {
+          "corte": "2016-10-24",
+          "costo": 913566.6352859649,
+          "cruces": 0,
+          "dentro_intervalo": 17276,
+          "filas": 24948,
+          "grupos_q": [
+            {
+              "cubiertos": 399,
+              "objetivo": 0.6,
+              "total": 486
+            },
+            {
+              "cubiertos": 749,
+              "objetivo": 0.6666666666666666,
+              "total": 918
+            },
+            {
+              "cubiertos": 341,
+              "objetivo": 0.8,
+              "total": 378
+            }
+          ],
+          "hash_predicciones": "cde99b167cdec49d",
+          "pinball": {
+            "0.1": 22.046154016143962,
+            "0.5": 43.00640250424469,
+            "0.9": 26.299163574620597
+          },
+          "rmsle": 0.538787043928648,
+          "suma_abs_error": 2130220.075037445,
+          "suma_real": 11188756.323594332
+        },
+        {
+          "corte": "2016-11-21",
+          "costo": 1081018.803604965,
+          "cruces": 0,
+          "dentro_intervalo": 19746,
+          "filas": 24948,
+          "grupos_q": [
+            {
+              "cubiertos": 266,
+              "objetivo": 0.6,
+              "total": 486
+            },
+            {
+              "cubiertos": 647,
+              "objetivo": 0.6666666666666666,
+              "total": 918
+            },
+            {
+              "cubiertos": 271,
+              "objetivo": 0.8,
+              "total": 378
+            }
+          ],
+          "hash_predicciones": "1f64aba8b3c65d37",
+          "pinball": {
+            "0.1": 15.451146314207003,
+            "0.5": 39.306104143420384,
+            "0.9": 27.25048856783198
+          },
+          "rmsle": 0.4509723743788399,
+          "suma_abs_error": 1950618.3663430025,
+          "suma_real": 11891256.270491362
+        },
+        {
+          "corte": "2016-12-19",
+          "costo": 2694317.293421097,
+          "cruces": 0,
+          "dentro_intervalo": 14676,
+          "filas": 23166,
+          "grupos_q": [
+            {
+              "cubiertos": 281,
+              "objetivo": 0.6,
+              "total": 486
+            },
+            {
+              "cubiertos": 509,
+              "objetivo": 0.6666666666666666,
+              "total": 918
+            },
+            {
+              "cubiertos": 161,
+              "objetivo": 0.8,
+              "total": 378
+            }
+          ],
+          "hash_predicciones": "6acc0399ea6f1bcb",
+          "pinball": {
+            "0.1": 30.37416765550832,
+            "0.5": 90.17962730101794,
+            "0.9": 87.56071903041939
+          },
+          "rmsle": 0.8709870969636753,
+          "suma_abs_error": 4194031.669709649,
+          "suma_real": 13334475.379886985
+        },
+        {
+          "corte": "2017-01-16",
+          "costo": 1534695.864651428,
+          "cruces": 0,
+          "dentro_intervalo": 21582,
+          "filas": 24948,
+          "grupos_q": [
+            {
+              "cubiertos": 256,
+              "objetivo": 0.6,
+              "total": 486
+            },
+            {
+              "cubiertos": 673,
+              "objetivo": 0.6666666666666666,
+              "total": 918
+            },
+            {
+              "cubiertos": 326,
+              "objetivo": 0.8,
+              "total": 378
+            }
+          ],
+          "hash_predicciones": "d78173a7147b2818",
+          "pinball": {
+            "0.1": 18.722282830041895,
+            "0.5": 48.93867972169969,
+            "0.9": 32.14605679400909
+          },
+          "rmsle": 0.4204212574585863,
+          "suma_abs_error": 2554986.749765601,
+          "suma_real": 11400604.726832747
+        },
+        {
+          "corte": "2017-02-13",
+          "costo": 1411787.2659982604,
+          "cruces": 0,
+          "dentro_intervalo": 20545,
+          "filas": 24948,
+          "grupos_q": [
+            {
+              "cubiertos": 341,
+              "objetivo": 0.6,
+              "total": 486
+            },
+            {
+              "cubiertos": 764,
+              "objetivo": 0.6666666666666666,
+              "total": 918
+            },
+            {
+              "cubiertos": 369,
+              "objetivo": 0.8,
+              "total": 378
+            }
+          ],
+          "hash_predicciones": "3095ec1b7e6edfbf",
+          "pinball": {
+            "0.1": 20.9628491681194,
+            "0.5": 42.9474214398719,
+            "0.9": 31.520069901959417
+          },
+          "rmsle": 0.5354897167490561,
+          "suma_abs_error": 2086914.7544610896,
+          "suma_real": 10970278.403897166
+        },
+        {
+          "corte": "2017-03-13",
+          "costo": 1085530.9618959809,
+          "cruces": 0,
+          "dentro_intervalo": 20683,
+          "filas": 24948,
+          "grupos_q": [
+            {
+              "cubiertos": 283,
+              "objetivo": 0.6,
+              "total": 486
+            },
+            {
+              "cubiertos": 672,
+              "objetivo": 0.6666666666666666,
+              "total": 918
+            },
+            {
+              "cubiertos": 318,
+              "objetivo": 0.8,
+              "total": 378
+            }
+          ],
+          "hash_predicciones": "ef2feacbea5b4f10",
+          "pinball": {
+            "0.1": 14.900442937625314,
+            "0.5": 37.20681075493983,
+            "0.9": 24.699263086664764
+          },
+          "rmsle": 0.3944272796797761,
+          "suma_abs_error": 1814739.9881836935,
+          "suma_real": 11947574.906360626
+        }
+      ],
+      "pico_memoria_mb": 1138,
+      "pinball": 33.09374066831328,
+      "rmsle": 0.510059475595045,
+      "wape": 0.1937198347604825
+    },
+    "lightgbm_poisson": {
+      "cobertura_intervalo": 0.7735563846674958,
+      "cobertura_q": [
+        {
+          "cobertura": 0.5694444444444444,
+          "objetivo": 0.6
+        },
+        {
+          "cobertura": 0.693218954248366,
+          "objetivo": 0.6666666666666666
+        },
+        {
+          "cobertura": 0.7347883597883598,
+          "objetivo": 0.8
+        }
+      ],
+      "costo_por_corte": [
+        986293.1692844391,
+        762274.650426941,
+        864678.9264577178,
+        946990.0341805266,
+        1949079.2640410918,
+        1053129.659009369,
+        719422.2349217071,
+        1228390.447438858
+      ],
+      "costo_total": 8510258.38576065,
+      "cruces": 0,
+      "detalle": [
+        {
+          "corte": "2016-08-29",
+          "costo": 986293.1692844391,
+          "cruces": 0,
+          "dentro_intervalo": 18906,
+          "filas": 24948,
+          "grupos_q": [
+            {
+              "cubiertos": 157,
+              "objetivo": 0.6,
+              "total": 486
+            },
+            {
+              "cubiertos": 535,
+              "objetivo": 0.6666666666666666,
+              "total": 918
+            },
+            {
+              "cubiertos": 161,
+              "objetivo": 0.8,
+              "total": 378
+            }
+          ],
+          "hash_predicciones": "2963d6061750cc19",
+          "pinball": {
+            "0.1": 13.501391877069796,
+            "0.5": 32.305977538484385,
+            "0.9": 19.00237158381092
+          },
+          "rmsle": 0.5121500538790614,
+          "suma_abs_error": 1536641.1065681414,
+          "suma_real": 11249736.488781273
+        },
+        {
+          "corte": "2016-09-26",
+          "costo": 762274.650426941,
+          "cruces": 0,
+          "dentro_intervalo": 19467,
+          "filas": 24948,
+          "grupos_q": [
+            {
+              "cubiertos": 283,
+              "objetivo": 0.6,
+              "total": 486
+            },
+            {
+              "cubiertos": 654,
+              "objetivo": 0.6666666666666666,
+              "total": 918
+            },
+            {
+              "cubiertos": 281,
+              "objetivo": 0.8,
+              "total": 378
+            }
+          ],
+          "hash_predicciones": "567838daf5b43e9f",
+          "pinball": {
+            "0.1": 14.418706252204311,
+            "0.5": 32.604840217337056,
+            "0.9": 20.67709738087703
+          },
+          "rmsle": 0.72525014313277,
+          "suma_abs_error": 1632815.0683895894,
+          "suma_real": 11307170.309962511
+        },
+        {
+          "corte": "2016-10-24",
+          "costo": 864678.9264577178,
+          "cruces": 0,
+          "dentro_intervalo": 17066,
+          "filas": 24948,
+          "grupos_q": [
+            {
+              "cubiertos": 377,
+              "objetivo": 0.6,
+              "total": 486
+            },
+            {
+              "cubiertos": 753,
+              "objetivo": 0.6666666666666666,
+              "total": 918
+            },
+            {
+              "cubiertos": 324,
+              "objetivo": 0.8,
+              "total": 378
+            }
+          ],
+          "hash_predicciones": "3c556507f193799e",
+          "pinball": {
+            "0.1": 25.732710025274468,
+            "0.5": 43.49335890643115,
+            "0.9": 24.225013004984177
+          },
+          "rmsle": 0.7424780923480577,
+          "suma_abs_error": 2162438.453382139,
+          "suma_real": 11188756.323594332
+        },
+        {
+          "corte": "2016-11-21",
+          "costo": 946990.0341805266,
+          "cruces": 0,
+          "dentro_intervalo": 19645,
+          "filas": 24948,
+          "grupos_q": [
+            {
+              "cubiertos": 306,
+              "objetivo": 0.6,
+              "total": 486
+            },
+            {
+              "cubiertos": 690,
+              "objetivo": 0.6666666666666666,
+              "total": 918
+            },
+            {
+              "cubiertos": 299,
+              "objetivo": 0.8,
+              "total": 378
+            }
+          ],
+          "hash_predicciones": "cdb72cd97e2bc6c9",
+          "pinball": {
+            "0.1": 18.43165867560887,
+            "0.5": 38.96162924070345,
+            "0.9": 24.92482901015498
+          },
+          "rmsle": 0.6233509293017726,
+          "suma_abs_error": 1943476.0528837778,
+          "suma_real": 11891256.270491362
+        },
+        {
+          "corte": "2016-12-19",
+          "costo": 1949079.2640410918,
+          "cruces": 0,
+          "dentro_intervalo": 14171,
+          "filas": 23166,
+          "grupos_q": [
+            {
+              "cubiertos": 298,
+              "objetivo": 0.6,
+              "total": 486
+            },
+            {
+              "cubiertos": 452,
+              "objetivo": 0.6666666666666666,
+              "total": 918
+            },
+            {
+              "cubiertos": 186,
+              "objetivo": 0.8,
+              "total": 378
+            }
+          ],
+          "hash_predicciones": "99b804f55cc1fc79",
+          "pinball": {
+            "0.1": 51.21647894400793,
+            "0.5": 89.37044777348837,
+            "0.9": 65.61261171059468
+          },
+          "rmsle": 1.3114009788206729,
+          "suma_abs_error": 4103366.7017459255,
+          "suma_real": 13334475.379886985
+        },
+        {
+          "corte": "2017-01-16",
+          "costo": 1053129.659009369,
+          "cruces": 0,
+          "dentro_intervalo": 21666,
+          "filas": 24948,
+          "grupos_q": [
+            {
+              "cubiertos": 240,
+              "objetivo": 0.6,
+              "total": 486
+            },
+            {
+              "cubiertos": 689,
+              "objetivo": 0.6666666666666666,
+              "total": 918
+            },
+            {
+              "cubiertos": 357,
+              "objetivo": 0.8,
+              "total": 378
+            }
+          ],
+          "hash_predicciones": "63bccfb617af0f81",
+          "pinball": {
+            "0.1": 17.828408599857273,
+            "0.5": 39.34517657750919,
+            "0.9": 26.317353679021387
+          },
+          "rmsle": 0.5022247726904768,
+          "suma_abs_error": 1975218.8924927225,
+          "suma_real": 11400604.726832747
+        },
+        {
+          "corte": "2017-02-13",
+          "costo": 719422.2349217071,
+          "cruces": 0,
+          "dentro_intervalo": 21448,
+          "filas": 24948,
+          "grupos_q": [
+            {
+              "cubiertos": 331,
+              "objetivo": 0.6,
+              "total": 486
+            },
+            {
+              "cubiertos": 694,
+              "objetivo": 0.6666666666666666,
+              "total": 918
+            },
+            {
+              "cubiertos": 359,
+              "objetivo": 0.8,
+              "total": 378
+            }
+          ],
+          "hash_predicciones": "201038dae2967ab0",
+          "pinball": {
+            "0.1": 21.551367140667328,
+            "0.5": 40.36254217406361,
+            "0.9": 23.929789013888932
+          },
+          "rmsle": 0.5753589548649444,
+          "suma_abs_error": 1977306.101331002,
+          "suma_real": 10970278.403897166
+        },
+        {
+          "corte": "2017-03-13",
+          "costo": 1228390.447438858,
+          "cruces": 0,
+          "dentro_intervalo": 20642,
+          "filas": 24948,
+          "grupos_q": [
+            {
+              "cubiertos": 222,
+              "objetivo": 0.6,
+              "total": 486
+            },
+            {
+              "cubiertos": 624,
+              "objetivo": 0.6666666666666666,
+              "total": 918
+            },
+            {
+              "cubiertos": 255,
+              "objetivo": 0.8,
+              "total": 378
+            }
+          ],
+          "hash_predicciones": "862acc969cede7ab",
+          "pinball": {
+            "0.1": 15.209852192236719,
+            "0.5": 36.08654985899685,
+            "0.9": 20.48223258958135
+          },
+          "rmsle": 0.46550025973251,
+          "suma_abs_error": 1795289.9584222804,
+          "suma_real": 11947574.906360626
+        }
+      ],
+      "pico_memoria_mb": 1055,
+      "pinball": 31.48301641528559,
+      "rmsle": 0.6822142730962832,
+      "wape": 0.18358430010745144
+    }
+  }
+}
