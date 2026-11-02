@@ -325,3 +325,37 @@ def test_restauracion_desde_tar(tmp_path, raiz):
     assert (tmp_path / "destino" / "lab1" / "objeto").read_text() == "datos"
     r = subprocess.run([raiz / "scripts/restaurar_dvc.sh", archivo, tmp_path / "destino"], capture_output=True)
     assert r.returncode != 0
+
+
+def test_commit_de_publicacion_no_contiene_datos(repo):
+    cfg = repo
+    publicar.publicar(cfg, CORTE)
+    versionado.versionar(cfg, CORTE, 1)
+    rutas = git(cfg, "ls-tree", "-r", "--name-only", "pub/2017-03-06-r1").splitlines()
+    assert "data/publicado/corte=2017-03-06/rev=1.dvc" in rutas
+    assert not [r for r in rutas if r.startswith((".dvc/cache", ".dvc/tmp", "models/")) or r.endswith((".parquet", ".csv", ".zip", ".joblib"))]
+
+
+def test_commit_con_datos_se_detiene(repo):
+    cfg = repo
+    arbol = subprocess.run(["git", "write-tree"], cwd=cfg.raiz, capture_output=True, text=True, check=True).stdout.strip()
+    versionado._exigir_sin_datos(cfg, arbol)
+    (cfg.raiz / ".dvc" / "cache").mkdir(exist_ok=True)
+    (cfg.raiz / ".dvc" / "cache" / "objeto").write_text("datos")
+    git(cfg, "add", "-f", ".dvc/cache/objeto")
+    arbol = git(cfg, "write-tree")
+    with pytest.raises(versionado.ErrorRespaldo, match="datos en git"):
+        versionado._exigir_sin_datos(cfg, arbol)
+
+
+def test_recuperacion_trae_los_objetos_del_remoto_y_no_de_git(repo):
+    cfg = repo
+    publicar.publicar(cfg, CORTE)
+    versionado.versionar(cfg, CORTE, 1)
+    versionado.respaldar(cfg, CORTE, 1)
+    clon = cfg.raiz.parent / "clon_sin_cache"
+    subprocess.run(["git", "clone", "-q", str(cfg.raiz), str(clon)], check=True)
+    subprocess.run(["git", "checkout", "-q", "pub/2017-03-06-r1"], cwd=clon, check=True)
+    assert not (clon / ".dvc" / "cache").exists()
+    salida = subprocess.run([sys.executable, "-m", "dvc", "pull"], cwd=clon, check=True, capture_output=True, text=True).stdout
+    assert "fetched" in salida

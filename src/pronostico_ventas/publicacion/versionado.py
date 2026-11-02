@@ -42,6 +42,17 @@ def ruta_remoto(cfg: Configuracion) -> Path:
     return (cfg.raiz / ".dvc" / config["'remote \"local\"'"]["url"]).resolve()
 
 
+def _exigir_sin_datos(cfg: Configuracion, arbol: str) -> None:
+    """Git solo admite código y referencias: un commit con datos se detiene antes de crearse."""
+    rutas = _exigir(_correr(cfg, "git", "ls-tree", "-r", "--name-only", arbol), "ls-tree").splitlines()
+    prohibidas = [
+        r for r in rutas
+        if r.startswith((".dvc/cache/", ".dvc/tmp/", "models/")) or (r.startswith("data/") and not r.endswith(".dvc"))
+    ]
+    if prohibidas:
+        raise ErrorRespaldo(f"datos en git: {len(prohibidas)} rutas, por ejemplo {prohibidas[0]}")
+
+
 def commit_publicacion(cfg: Configuracion, etiqueta: str) -> str:
     """Une el código actual con las referencias .dvc, sin tocar el índice ni la rama de trabajo."""
     base = _exigir(_correr(cfg, "git", "rev-parse", "HEAD"), "git").strip()
@@ -52,9 +63,12 @@ def commit_publicacion(cfg: Configuracion, etiqueta: str) -> str:
         if previo:
             lista = _exigir(_correr(cfg, "git", "ls-tree", "-r", previo, "--", "data", "models.dvc"), "ls-tree")
             _exigir(_correr(cfg, "git", "update-index", "--index-info", entorno=entorno, entrada=lista), "update-index")
-        referencias = sorted(str(r.relative_to(cfg.raiz)) for r in [*cfg.raiz.glob("*.dvc"), *(cfg.raiz / "data").rglob("*.dvc")])
+        referencias = sorted(
+            str(r.relative_to(cfg.raiz)) for r in [*cfg.raiz.glob("*.dvc"), *(cfg.raiz / "data").rglob("*.dvc")] if r.is_file()
+        )
         _exigir(_correr(cfg, "git", "add", "-f", "--", *referencias, entorno=entorno), "add")
         arbol = _exigir(_correr(cfg, "git", "write-tree", entorno=entorno), "write-tree").strip()
+    _exigir_sin_datos(cfg, arbol)
     padres = ["-p", previo] if previo else []
     if not previo or _correr(cfg, "git", "merge-base", "--is-ancestor", base, previo).returncode != 0:
         padres += ["-p", base]
