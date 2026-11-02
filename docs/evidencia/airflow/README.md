@@ -21,3 +21,14 @@ Exportaciones por consola, no capturas de la interfaz.
 | Reproceso repetido | No crea otra revisión |
 
 Hay un registro de omisión para el corte 2017-08-21, motivo `datos_antiguos:['ventas']` con 7 días de atraso. Las ventas terminan el 2017-08-15. La revisión 1 de ese corte existe y sigue `RESPALDADA`.
+
+## Capturas de la interfaz
+
+Tomadas durante la ejecución final, mientras se procesaba la corrida del 2017-06-05. Muestran un estado intermedio: el resultado final está en `verificacion_final.txt`.
+
+| Archivo | Vista | Qué muestra |
+|---|---|---|
+| `capturas/airflow1.png` | Inicio | Salud de los componentes, corridas y tareas de las últimas 24 horas |
+| `capturas/airflow2.png` | Lista de DAGs | Cinco DAGs del producto con sus corridas recientes; `seguimiento_desempeno` aparece cortado |
+
+El indicador rojo de Triggerer es esperado: el stack no incluye ese servicio porque ningún DAG usa operadores diferibles.
