@@ -97,7 +97,7 @@ def canonico(tabla: pd.DataFrame) -> str:
 
 def canonico_igual(pronostico: pd.DataFrame, pedido: pd.DataFrame, previo: dict[str, Any]) -> bool:
     """Una revisión solo tiene sentido si cambia lo publicado."""
-    return _canonico(pronostico) == previo["hash_pronostico"] and _canonico(pedido) == previo["hash_pedido"]
+    return canonico(pronostico) == previo["hash_pronostico"] and canonico(pedido) == previo["hash_pedido"]
 
 
 def _escribir_publicacion(destino: Path, pronostico: pd.DataFrame, pedido: pd.DataFrame, manifiesto: dict[str, Any]) -> None:
