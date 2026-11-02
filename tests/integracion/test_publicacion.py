@@ -181,6 +181,10 @@ def test_flujo_completo_respaldada_y_recuperable(repo, tmp_path):
     subprocess.run([sys.executable, "-m", "dvc", "pull"], cwd=clon, check=True, capture_output=True)
     copia = clon / "data" / "publicado" / "corte=2017-03-06" / "rev=1" / "manifest.json"
     assert json.loads(copia.read_text(encoding="utf-8")) == publicada(cfg)[2]
+    assert (clon / "models" / publicada(cfg)[2]["modelo"]["id"] / "modelo.joblib").is_file()
+    from pronostico_ventas.publicacion.reproduccion import reproducir
+
+    assert reproducir(config.cargar(clon), CORTE, 1)["identico"]
 
 
 def test_commit_de_publicacion_no_toca_el_repositorio_de_trabajo(repo):
